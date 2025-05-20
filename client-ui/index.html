@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>场馆预约系统 - 原型预览</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        background-color: #f5f5f7;
+      }
+      .page-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+        gap: 20px;
+        padding: 20px;
+      }
+      .page-frame {
+        width: 393px;
+        height: 852px;
+        border-radius: 40px;
+        overflow: hidden;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
+        border: 12px solid #1a1a1a;
+        position: relative;
+      }
+      .page-frame::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 150px;
+        height: 20px;
+        background-color: #1a1a1a;
+        border-bottom-left-radius: 14px;
+        border-bottom-right-radius: 14px;
+        z-index: 10;
+      }
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+      h1 {
+        font-weight: 700;
+        color: #333;
+        text-align: center;
+        margin: 30px 0;
+      }
+      .page-title {
+        text-align: center;
+        font-weight: 600;
+        margin-top: 10px;
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="text-3xl">场馆预约系统 - iOS 风格原型界面</h1>
+
+    <div class="page-container">
+      <div>
+        <div class="page-frame">
+          <iframe src="pages/welcome.html" title="欢迎页"></iframe>
+        </div>
+        <p class="page-title">欢迎页</p>
+      </div>
+
+      <div>
+        <div class="page-frame">
+          <iframe src="pages/login.html" title="登录页"></iframe>
+        </div>
+        <p class="page-title">登录页</p>
+      </div>
+
+      <div>
+        <div class="page-frame">
+          <iframe src="pages/register.html" title="注册页"></iframe>
+        </div>
+        <p class="page-title">注册页</p>
+      </div>
+
+      <div>
+        <div class="page-frame">
+          <iframe src="pages/home.html" title="首页"></iframe>
+        </div>
+        <p class="page-title">首页</p>
+      </div>
+
+      <div>
+        <div class="page-frame">
+          <iframe src="pages/search.html" title="搜索页"></iframe>
+        </div>
+        <p class="page-title">搜索页</p>
+      </div>
+
+      <div>
+        <div class="page-frame">
+          <iframe src="pages/venue_detail.html" title="场馆详情页"></iframe>
+        </div>
+        <p class="page-title">场馆详情页</p>
+      </div>
+
+      <div>
+        <div class="page-frame">
+          <iframe src="pages/booking.html" title="预约页面"></iframe>
+        </div>
+        <p class="page-title">预约页面</p>
+      </div>
+
+      <div>
+        <div class="page-frame">
+          <iframe src="pages/orders.html" title="我的订单页"></iframe>
+        </div>
+        <p class="page-title">我的订单页</p>
+      </div>
+
+      <div>
+        <div class="page-frame">
+          <iframe src="pages/order_detail.html" title="订单详情页"></iframe>
+        </div>
+        <p class="page-title">订单详情页</p>
+      </div>
+
+      <div>
+        <div class="page-frame">
+          <iframe src="pages/payment.html" title="支付页面"></iframe>
+        </div>
+        <p class="page-title">支付页面</p>
+      </div>
+
+      <div>
+        <div class="page-frame">
+          <iframe src="pages/profile.html" title="个人中心页"></iframe>
+        </div>
+        <p class="page-title">个人中心页</p>
+      </div>
+
+      <div>
+        <div class="page-frame">
+          <iframe src="pages/notifications.html" title="消息通知页"></iframe>
+        </div>
+        <p class="page-title">消息通知页</p>
+      </div>
+
+      <div>
+        <div class="page-frame">
+          <iframe src="pages/favorites.html" title="我的收藏页"></iframe>
+        </div>
+        <p class="page-title">我的收藏页</p>
+      </div>
+
+      <div>
+        <div class="page-frame">
+          <iframe src="pages/activities.html" title="活动页面"></iframe>
+        </div>
+        <p class="page-title">活动页面</p>
+      </div>
+
+      <div>
+        <div class="page-frame">
+          <iframe src="pages/settings.html" title="设置页面"></iframe>
+        </div>
+        <p class="page-title">设置页面</p>
+      </div>
+    </div>
+  </body>
+</html>

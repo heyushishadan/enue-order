@@ -1,0 +1,94 @@
+-- 创建 User 表
+CREATE TABLE User (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    contact VARCHAR(20),
+    role ENUM ('普通用户', '管理员') NOT NULL,
+    registration_time DATETIME NOT NULL,
+    account_status ENUM ('正常', '禁用') NOT NULL
+);
+
+-- 创建 Venue 表
+CREATE TABLE Venue (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    type VARCHAR(50),
+    status ENUM ('可用', '维修中', '暂停预约') NOT NULL,
+    lowest_price DECIMAL(10, 2),
+    location VARCHAR(200)
+);
+
+-- 创建 TimeSlotPrice 表
+CREATE TABLE TimeSlotPrice (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    venue_id INT NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    -- 外键约束，关联 Venue 表的 id 字段
+    FOREIGN KEY (venue_id) REFERENCES Venue(id)
+);
+
+-- 创建 Reservation 表
+CREATE TABLE Reservation (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    venue_id INT NOT NULL,
+    reservation_time DATETIME NOT NULL,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NOT NULL,
+    status ENUM ('待审核', '已确认', '已取消', '已完成') NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    payment_status ENUM ('未支付', '已支付', '支付失败') NOT NULL,
+    -- 外键约束，关联 User 表的 id 字段
+    FOREIGN KEY (user_id) REFERENCES User(id),
+    -- 外键约束，关联 Venue 表的 id 字段
+    FOREIGN KEY (venue_id) REFERENCES Venue(id)
+);
+
+-- 创建 Evaluation 表
+CREATE TABLE Evaluation (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    venue_id INT NOT NULL,
+    star_rating TINYINT NOT NULL,
+    comment TEXT,
+    evaluation_time DATETIME NOT NULL,
+    -- 外键约束，关联 User 表的 id 字段
+    FOREIGN KEY (user_id) REFERENCES User(id),
+    -- 外键约束，关联 Venue 表的 id 字段
+    FOREIGN KEY (venue_id) REFERENCES Venue(id)
+);
+
+-- 创建 Payment 表
+CREATE TABLE Payment (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    reservation_id INT NOT NULL,
+    payment_method VARCHAR(20),
+    payment_time DATETIME NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    status ENUM ('待处理', '已处理') NOT NULL,
+    -- 外键约束，关联 Reservation 表的 id 字段
+    FOREIGN KEY (reservation_id) REFERENCES Reservation(id)
+);
+
+-- 为 User 表的 username 字段添加唯一索引
+CREATE UNIQUE INDEX idx_username ON User(username);
+
+-- 为 Venue 表的 name 字段添加索引（如果有查询需求）
+CREATE INDEX idx_venue_name ON Venue(name);
+
+-- 为 TimeSlotPrice 表的 venue_id 字段添加索引
+CREATE INDEX idx_timeslotprice_venue_id ON TimeSlotPrice(venue_id);
+
+-- 为 Reservation 表的 user_id 和 venue_id 字段添加索引
+CREATE INDEX idx_reservation_user_id ON Reservation(user_id);
+CREATE INDEX idx_reservation_venue_id ON Reservation(venue_id);
+
+-- 为 Evaluation 表的 user_id 和 venue_id 字段添加索引
+CREATE INDEX idx_evaluation_user_id ON Evaluation(user_id);
+CREATE INDEX idx_evaluation_venue_id ON Evaluation(venue_id);
+
+-- 为 Payment 表的 reservation_id 字段添加索引
+CREATE INDEX idx_payment_reservation_id ON Payment(reservation_id);

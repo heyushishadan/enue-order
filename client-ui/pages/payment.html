@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>支付 - 场馆预约系统</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      .payment-container {
+        padding-bottom: 130px;
+      }
+      .payment-section {
+        background-color: white;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        padding: 15px;
+      }
+      .section-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+      }
+      .section-title i {
+        color: var(--primary-color);
+        margin-right: 8px;
+      }
+      .venue-info {
+        display: flex;
+        margin-bottom: 5px;
+      }
+      .venue-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        object-fit: cover;
+        margin-right: 12px;
+      }
+      .venue-details {
+        flex: 1;
+      }
+      .venue-name {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .venue-address {
+        color: var(--gray-1);
+        font-size: 14px;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+      }
+      .venue-address i {
+        margin-right: 5px;
+        font-size: 12px;
+      }
+      .booking-info {
+        font-size: 14px;
+        color: var(--gray-1);
+        padding-top: 10px;
+        border-top: 1px solid var(--gray-5);
+        display: flex;
+        flex-direction: column;
+      }
+      .booking-info-item {
+        margin-bottom: 5px;
+        display: flex;
+      }
+      .booking-info-item i {
+        width: 16px;
+        margin-right: 5px;
+        text-align: center;
+      }
+      .payment-option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 0;
+        border-bottom: 1px solid var(--gray-5);
+      }
+      .payment-option:last-child {
+        border-bottom: none;
+      }
+      .payment-option-logo {
+        display: flex;
+        align-items: center;
+      }
+      .payment-option-logo img {
+        width: 28px;
+        height: 28px;
+        margin-right: 10px;
+      }
+      .payment-option-text {
+        font-size: 16px;
+        font-weight: 500;
+      }
+      .payment-option-radio {
+        width: 20px;
+        height: 20px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border: 2px solid var(--gray-3);
+        border-radius: 50%;
+        outline: none;
+        position: relative;
+      }
+      .payment-option-radio:checked {
+        border-color: var(--primary-color);
+      }
+      .payment-option-radio:checked::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 10px;
+        height: 10px;
+        background-color: var(--primary-color);
+        border-radius: 50%;
+      }
+      .price-summary {
+        margin-top: 10px;
+      }
+      .price-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+      .price-total {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid var(--gray-5);
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .price-total .amount {
+        color: var(--danger-color);
+      }
+      .agreement {
+        margin: 15px 0;
+        display: flex;
+        align-items: flex-start;
+      }
+      .agreement input {
+        margin-right: 8px;
+        margin-top: 3px;
+      }
+      .agreement-text {
+        font-size: 13px;
+        color: var(--gray-1);
+        line-height: 1.5;
+      }
+      .agreement-text a {
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+      .payment-footer {
+        position: fixed;
+        bottom: 83px;
+        left: 0;
+        right: 0;
+        background-color: white;
+        padding: 15px;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .footer-price {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--danger-color);
+      }
+      .footer-price-label {
+        font-size: 14px;
+        color: var(--gray-1);
+        margin-right: 5px;
+      }
+      .pay-btn {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        padding: 12px 30px;
+        border-radius: 10px;
+        border: none;
+      }
+      .error-message {
+        color: var(--danger-color);
+        font-size: 13px;
+        margin-top: 5px;
+        display: none;
+      }
+      .countdown {
+        font-size: 14px;
+        color: var(--gray-1);
+        text-align: center;
+        margin-bottom: 15px;
+      }
+      .countdown span {
+        color: var(--danger-color);
+        font-weight: 600;
+      }
+      /* 自定义提示框样式 */
+      .toast-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 8px;
+        font-size: 16px;
+        z-index: 1000;
+        display: none;
+      }
+      .toast-container.show {
+        display: block;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 自定义提示框 -->
+    <div class="toast-container" id="toast">
+      <span id="toast-message"></span>
+    </div>
+
+    <!-- iOS状态栏 -->
+    <div class="ios-status-bar">
+      <div class="time">9:41</div>
+      <div class="status-icons">
+        <i class="fas fa-signal"></i>
+        <i class="fas fa-wifi"></i>
+        <i class="fas fa-battery-full"></i>
+      </div>
+    </div>
+
+    <!-- iOS导航栏 -->
+    <div class="ios-nav-bar">
+      <div class="left-button" data-action="back" data-target="booking.html">
+        <i class="fas fa-chevron-left"></i> 返回
+      </div>
+      <div class="title">支付</div>
+      <div class="right-button"></div>
+    </div>
+
+    <div class="content payment-container">
+      <!-- 倒计时 -->
+      <div class="countdown">
+        <span id="countdown-timer">14:59</span> 内完成支付，超时订单将自动取消
+      </div>
+
+      <!-- 预约信息 -->
+      <div class="payment-section">
+        <div class="section-title">
+          <i class="fas fa-receipt"></i>
+          <span>预约信息</span>
+        </div>
+
+        <div class="venue-info">
+          <img
+            src="https://images.unsplash.com/photo-1580261450046-d0a30080dc9b?w=500&auto=format&fit=crop&q=60"
+            alt="星动篮球馆"
+            class="venue-image"
+          />
+          <div class="venue-details">
+            <div class="venue-name">星动篮球馆</div>
+            <div class="venue-address">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>海淀区新源南路8号</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="booking-info">
+          <div class="booking-info-item">
+            <i class="far fa-calendar-alt"></i>
+            <span>2023年6月15日(今天)</span>
+          </div>
+          <div class="booking-info-item">
+            <i class="far fa-clock"></i>
+            <span>10:00 - 11:00</span>
+          </div>
+          <div class="booking-info-item">
+            <i class="fas fa-map"></i>
+            <span>A1场地</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 支付方式 -->
+      <div class="payment-section">
+        <div class="section-title">
+          <i class="fas fa-credit-card"></i>
+          <span>支付方式</span>
+        </div>
+
+        <div class="payment-option">
+          <div class="payment-option-logo">
+            <img src="https://www.alipay.com/favicon.ico" alt="支付宝" />
+            <div class="payment-option-text">支付宝</div>
+          </div>
+          <input
+            type="radio"
+            name="payment"
+            class="payment-option-radio"
+            checked
+          />
+        </div>
+      </div>
+
+      <!-- 费用明细 -->
+      <div class="payment-section">
+        <div class="section-title">
+          <i class="fas fa-file-invoice-dollar"></i>
+          <span>费用明细</span>
+        </div>
+
+        <div class="price-summary">
+          <div class="price-item">
+            <div class="price-label">场地使用费</div>
+            <div class="price-value">¥80</div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-label">服务费</div>
+            <div class="price-value">¥5</div>
+          </div>
+
+          <div class="price-total">
+            <div class="price-label">应付金额</div>
+            <div class="amount">¥85</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 支付协议 -->
+      <div class="agreement">
+        <input type="checkbox" id="agree" checked />
+        <div class="agreement-text">
+          我已阅读并同意 <a href="#">《预约服务协议》</a>、<a href="#"
+            >《场馆使用规则》</a
+          >
+          和 <a href="#">《退款政策》</a>
+        </div>
+      </div>
+
+      <div class="error-message" id="agreement-error">请阅读并同意协议</div>
+    </div>
+
+    <!-- 支付底栏 -->
+    <div class="payment-footer">
+      <div class="footer-price">
+        <span class="footer-price-label">应付金额：</span>¥85
+      </div>
+      <button class="pay-btn" id="payButton">确认支付</button>
+    </div>
+
+    <!-- iOS底部标签栏 -->
+    <div class="ios-tab-bar">
+      <a class="tab-item" data-target="home.html">
+        <i class="fas fa-home"></i>
+        <span>首页</span>
+      </a>
+      <a class="tab-item" data-target="orders.html">
+        <i class="fas fa-calendar-alt"></i>
+        <span>订单</span>
+      </a>
+      <a class="tab-item" data-target="profile.html">
+        <i class="fas fa-user"></i>
+        <span>我的</span>
+      </a>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 显示提示框函数
+        function showToast(message, duration = 2000) {
+          const toast = document.getElementById('toast');
+          const toastMessage = document.getElementById('toast-message');
+          toastMessage.textContent = message;
+          toast.classList.add('show');
+          setTimeout(() => {
+            toast.classList.remove('show');
+          }, duration);
+        }
+
+        // 倒计时功能
+        const countdownEl = document.getElementById("countdown-timer");
+        let minutes = 14;
+        let seconds = 59;
+
+        const countdownInterval = setInterval(() => {
+          if (seconds === 0) {
+            if (minutes === 0) {
+              clearInterval(countdownInterval);
+              alert("支付超时，订单已取消");
+              window.location.href = "orders.html";
+              return;
+            }
+            minutes--;
+            seconds = 59;
+          } else {
+            seconds--;
+          }
+
+          const minutesStr = minutes.toString().padStart(2, "0");
+          const secondsStr = seconds.toString().padStart(2, "0");
+          countdownEl.textContent = `${minutesStr}:${secondsStr}`;
+        }, 1000);
+
+        // 支付按钮点击事件
+        const payButton = document.getElementById("payButton");
+        const agreeCheckbox = document.getElementById("agree");
+        const agreementError = document.getElementById("agreement-error");
+
+        payButton.addEventListener("click", function () {
+          if (!agreeCheckbox.checked) {
+            agreementError.style.display = "block";
+            return;
+          }
+
+          agreementError.style.display = "none";
+
+          // 模拟支付过程
+          payButton.disabled = true;
+          payButton.textContent = "支付中...";
+
+          setTimeout(() => {
+            showToast("余额不足 支付失败");
+            // 恢复按钮状态
+            payButton.disabled = false;
+            payButton.textContent = "确认支付";
+          }, 2000);
+        });
+
+        // 同意复选框事件
+        agreeCheckbox.addEventListener("change", function () {
+          if (this.checked) {
+            agreementError.style.display = "none";
+          }
+        });
+
+        // 支付方式选择事件
+        const paymentOptions = document.querySelectorAll(".payment-option");
+        paymentOptions.forEach((option) => {
+          option.addEventListener("click", function () {
+            const radio = this.querySelector(".payment-option-radio");
+            radio.checked = true;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

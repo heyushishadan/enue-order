@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>搜索 - 场馆预约系统</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      .search-container {
+        padding-bottom: 83px;
+      }
+      .search-result-item {
+        border-radius: 10px;
+        background-color: white;
+        margin-bottom: 15px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+      .search-result-content {
+        display: flex;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .search-result-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+      }
+      .search-result-info {
+        flex: 1;
+        padding: 12px;
+      }
+      .search-result-name {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .search-result-address {
+        font-size: 13px;
+        color: var(--gray-1);
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+      }
+      .search-result-address i {
+        margin-right: 5px;
+        font-size: 12px;
+      }
+      .search-result-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+      }
+      .search-result-rating {
+        display: flex;
+        align-items: center;
+        color: var(--warning-color);
+      }
+      .search-result-rating span {
+        color: var(--black);
+        margin-left: 4px;
+      }
+      .search-result-price {
+        color: var(--danger-color);
+        font-weight: 500;
+      }
+      .search-result-tags {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+      .search-result-tag {
+        font-size: 12px;
+        background-color: var(--gray-5);
+        padding: 2px 8px;
+        border-radius: 100px;
+        margin-right: 6px;
+        margin-bottom: 5px;
+        color: var(--gray-1);
+      }
+      .filter-bar {
+        display: flex;
+        margin-bottom: 15px;
+        overflow-x: auto;
+        padding-bottom: 5px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .filter-bar::-webkit-scrollbar {
+        display: none;
+      }
+      .filter-item {
+        white-space: nowrap;
+        padding: 8px 15px;
+        background-color: white;
+        border-radius: 100px;
+        margin-right: 10px;
+        font-size: 14px;
+        border: 1px solid var(--gray-5);
+        display: flex;
+        align-items: center;
+      }
+      .filter-item.active {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+      .filter-item i {
+        margin-right: 5px;
+        font-size: 12px;
+      }
+      .filter-drawer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: white;
+        border-radius: 20px 20px 0 0;
+        padding: 20px;
+        z-index: 1000;
+        transform: translateY(100%);
+        transition: transform 0.3s ease-out;
+        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+      }
+      .filter-drawer.open {
+        transform: translateY(0);
+      }
+      .filter-drawer-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        display: none;
+      }
+      .filter-drawer-overlay.open {
+        display: block;
+      }
+      .filter-drawer-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .filter-drawer-title {
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .filter-drawer-close {
+        font-size: 22px;
+        color: var(--gray-1);
+      }
+      .filter-section {
+        margin-bottom: 20px;
+      }
+      .filter-section-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      .filter-options {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .filter-option {
+        padding: 8px 15px;
+        background-color: var(--gray-6);
+        border-radius: 8px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        font-size: 14px;
+      }
+      .filter-option.selected {
+        background-color: rgba(0, 122, 255, 0.1);
+        color: var(--primary-color);
+      }
+      .price-range {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+      .price-input {
+        width: 120px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid var(--gray-5);
+        padding: 0 10px;
+        text-align: center;
+      }
+      .price-separator {
+        margin: 0 10px;
+        color: var(--gray-2);
+      }
+      .filter-actions {
+        display: flex;
+        margin-top: 20px;
+      }
+      .filter-reset {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid var(--gray-5);
+        border-radius: 10px;
+        text-align: center;
+        margin-right: 10px;
+      }
+      .filter-apply {
+        flex: 2;
+        padding: 12px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 10px;
+        text-align: center;
+      }
+      .search-history {
+        margin-bottom: 20px;
+      }
+      .search-history-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .search-history-clear {
+        color: var(--gray-1);
+        font-size: 14px;
+        font-weight: normal;
+      }
+      .search-history-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--gray-5);
+      }
+      .search-history-text {
+        display: flex;
+        align-items: center;
+      }
+      .search-history-text i {
+        color: var(--gray-2);
+        margin-right: 10px;
+      }
+      .search-history-delete {
+        color: var(--gray-2);
+      }
+      .no-results {
+        text-align: center;
+        padding: 40px 0;
+        color: var(--gray-1);
+      }
+      .no-results i {
+        font-size: 40px;
+        margin-bottom: 10px;
+        color: var(--gray-3);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- iOS状态栏 -->
+    <div class="ios-status-bar">
+      <div class="time">9:41</div>
+      <div class="status-icons">
+        <i class="fas fa-signal"></i>
+        <i class="fas fa-wifi"></i>
+        <i class="fas fa-battery-full"></i>
+      </div>
+    </div>
+
+    <!-- iOS导航栏 -->
+    <div class="ios-nav-bar">
+      <div class="left-button" data-action="back" data-target="home.html">
+        <i class="fas fa-chevron-left"></i> 返回
+      </div>
+      <div class="title">场馆搜索</div>
+      <div class="right-button"></div>
+    </div>
+
+    <div class="search-container">
+      <!-- 搜索栏 -->
+      <div class="ios-search-bar ios-mb-3">
+        <i class="fas fa-search"></i>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="搜索场馆名称、位置"
+          data-results="#searchResults"
+          autofocus
+        />
+        <i
+          class="fas fa-times-circle"
+          id="clearSearch"
+          style="display: none; color: var(--gray-2)"
+        ></i>
+      </div>
+
+      <!-- 搜索历史 -->
+      <div class="search-history" id="searchHistory">
+        <div class="search-history-title">
+          <span>搜索历史</span>
+          <a href="#" class="search-history-clear">清空</a>
+        </div>
+        <div class="search-history-item">
+          <div class="search-history-text">
+            <i class="fas fa-history"></i>
+            <span>篮球场</span>
+          </div>
+          <i class="fas fa-times search-history-delete"></i>
+        </div>
+        <div class="search-history-item">
+          <div class="search-history-text">
+            <i class="fas fa-history"></i>
+            <span>海淀区</span>
+          </div>
+          <i class="fas fa-times search-history-delete"></i>
+        </div>
+        <div class="search-history-item">
+          <div class="search-history-text">
+            <i class="fas fa-history"></i>
+            <span>游泳馆</span>
+          </div>
+          <i class="fas fa-times search-history-delete"></i>
+        </div>
+      </div>
+
+      <!-- 过滤条件栏 -->
+      <div class="filter-bar" id="filterBar" style="display: none">
+        <div class="filter-item" id="sortFilter">
+          <i class="fas fa-sort"></i> 默认排序
+        </div>
+        <div class="filter-item">
+          <i class="fas fa-map-marker-alt"></i> 距离
+        </div>
+        <div class="filter-item"><i class="fas fa-star"></i> 评分</div>
+        <div class="filter-item"><i class="fas fa-yen-sign"></i> 价格</div>
+        <div class="filter-item" id="filterButton">
+          <i class="fas fa-filter"></i> 筛选
+        </div>
+      </div>
+
+      <!-- 搜索结果 -->
+      <div id="searchResults" style="display: none">
+        <a href="venue_detail.html" class="search-result-item searchable-item">
+          <div class="search-result-content">
+            <img
+              src="https://images.unsplash.com/photo-1580261450046-d0a30080dc9b?w=500&auto=format&fit=crop&q=60"
+              alt="星动篮球馆"
+              class="search-result-image"
+            />
+            <div class="search-result-info">
+              <h3 class="search-result-name">星动篮球馆</h3>
+              <p class="search-result-address">
+                <i class="fas fa-map-marker-alt"></i>
+                海淀区新源南路8号
+              </p>
+              <div class="search-result-meta">
+                <div class="search-result-rating">
+                  <i class="fas fa-star"></i>
+                  <span>4.8 (124条评价)</span>
+                </div>
+                <div class="search-result-price">¥80/小时起</div>
+              </div>
+              <div class="search-result-tags">
+                <span class="search-result-tag">篮球场</span>
+                <span class="search-result-tag">专业木地板</span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <a href="venue_detail.html" class="search-result-item searchable-item">
+          <div class="search-result-content">
+            <img
+              src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&auto=format&fit=crop&q=60"
+              alt="力健健身中心"
+              class="search-result-image"
+            />
+            <div class="search-result-info">
+              <h3 class="search-result-name">力健健身中心</h3>
+              <p class="search-result-address">
+                <i class="fas fa-map-marker-alt"></i>
+                东城区东直门外大街42号
+              </p>
+              <div class="search-result-meta">
+                <div class="search-result-rating">
+                  <i class="fas fa-star"></i>
+                  <span>4.7 (153条评价)</span>
+                </div>
+                <div class="search-result-price">¥100/次起</div>
+              </div>
+              <div class="search-result-tags">
+                <span class="search-result-tag">健身房</span>
+                <span class="search-result-tag">器械齐全</span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <a href="venue_detail.html" class="search-result-item searchable-item">
+          <div class="search-result-content">
+            <img
+              src="https://images.unsplash.com/photo-1448743133657-56d4745cee20?w=500&auto=format&fit=crop&q=60"
+              alt="城市游泳中心"
+              class="search-result-image"
+            />
+            <div class="search-result-info">
+              <h3 class="search-result-name">城市游泳中心</h3>
+              <p class="search-result-address">
+                <i class="fas fa-map-marker-alt"></i>
+                朝阳区建国路88号
+              </p>
+              <div class="search-result-meta">
+                <div class="search-result-rating">
+                  <i class="fas fa-star"></i>
+                  <span>4.6 (98条评价)</span>
+                </div>
+                <div class="search-result-price">¥60/小时起</div>
+              </div>
+              <div class="search-result-tags">
+                <span class="search-result-tag">游泳馆</span>
+                <span class="search-result-tag">恒温</span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <a href="venue_detail.html" class="search-result-item searchable-item">
+          <div class="search-result-content">
+            <img
+              src="https://images.unsplash.com/photo-1529516548873-9ce57c8f155e?w=500&auto=format&fit=crop&q=60"
+              alt="飞羽羽毛球馆"
+              class="search-result-image"
+            />
+            <div class="search-result-info">
+              <h3 class="search-result-name">飞羽羽毛球馆</h3>
+              <p class="search-result-address">
+                <i class="fas fa-map-marker-alt"></i>
+                海淀区学院路15号
+              </p>
+              <div class="search-result-meta">
+                <div class="search-result-rating">
+                  <i class="fas fa-star"></i>
+                  <span>4.5 (87条评价)</span>
+                </div>
+                <div class="search-result-price">¥70/小时起</div>
+              </div>
+              <div class="search-result-tags">
+                <span class="search-result-tag">羽毛球场</span>
+                <span class="search-result-tag">标准场地</span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <div class="no-results hidden">
+          <i class="fas fa-search"></i>
+          <p>没有找到相关场馆</p>
+          <p class="ios-mt-2 ios-text-gray">尝试不同的关键词或筛选条件</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 筛选抽屉 -->
+    <div class="filter-drawer-overlay" id="filterOverlay"></div>
+    <div class="filter-drawer" id="filterDrawer">
+      <div class="filter-drawer-header">
+        <div class="filter-drawer-title">筛选</div>
+        <div class="filter-drawer-close" id="filterClose">×</div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-section-title">场馆类型</div>
+        <div class="filter-options">
+          <div class="filter-option">篮球场</div>
+          <div class="filter-option">羽毛球场</div>
+          <div class="filter-option">游泳馆</div>
+          <div class="filter-option">健身房</div>
+          <div class="filter-option">足球场</div>
+          <div class="filter-option">排球场</div>
+          <div class="filter-option">网球场</div>
+          <div class="filter-option">乒乓球室</div>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-section-title">价格范围</div>
+        <div class="price-range">
+          <input type="number" class="price-input" placeholder="最低价" />
+          <span class="price-separator">至</span>
+          <input type="number" class="price-input" placeholder="最高价" />
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-section-title">评分</div>
+        <div class="filter-options">
+          <div class="filter-option">4.5分以上</div>
+          <div class="filter-option">4分以上</div>
+          <div class="filter-option">3.5分以上</div>
+          <div class="filter-option">3分以上</div>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-section-title">场馆特点</div>
+        <div class="filter-options">
+          <div class="filter-option">干净整洁</div>
+          <div class="filter-option">器材齐全</div>
+          <div class="filter-option">停车方便</div>
+          <div class="filter-option">交通便利</div>
+          <div class="filter-option">灯光充足</div>
+          <div class="filter-option">有淋浴</div>
+          <div class="filter-option">有更衣室</div>
+          <div class="filter-option">有休息区</div>
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <div class="filter-reset" id="filterReset">重置</div>
+        <div class="filter-apply" id="filterApply">应用</div>
+      </div>
+    </div>
+
+    <!-- iOS底部标签栏 -->
+    <div class="ios-tab-bar">
+      <a class="tab-item active" data-target="home.html">
+        <i class="fas fa-home"></i>
+        <span>首页</span>
+      </a>
+      <a class="tab-item" data-target="orders.html">
+        <i class="fas fa-calendar-alt"></i>
+        <span>订单</span>
+      </a>
+      <a class="tab-item" data-target="profile.html">
+        <i class="fas fa-user"></i>
+        <span>我的</span>
+      </a>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("searchInput");
+        const clearSearch = document.getElementById("clearSearch");
+        const searchHistory = document.getElementById("searchHistory");
+        const searchResults = document.getElementById("searchResults");
+        const filterBar = document.getElementById("filterBar");
+        const filterButton = document.getElementById("filterButton");
+        const filterDrawer = document.getElementById("filterDrawer");
+        const filterOverlay = document.getElementById("filterOverlay");
+        const filterClose = document.getElementById("filterClose");
+        const filterReset = document.getElementById("filterReset");
+        const filterApply = document.getElementById("filterApply");
+        const filterOptions = document.querySelectorAll(".filter-option");
+        const sortFilter = document.getElementById("sortFilter");
+
+        // 搜索框输入事件
+        searchInput.addEventListener("input", function () {
+          if (this.value) {
+            clearSearch.style.display = "block";
+            searchHistory.style.display = "none";
+            searchResults.style.display = "block";
+            filterBar.style.display = "flex";
+          } else {
+            clearSearch.style.display = "none";
+            searchHistory.style.display = "block";
+            searchResults.style.display = "none";
+            filterBar.style.display = "none";
+          }
+        });
+
+        // 清除搜索
+        clearSearch.addEventListener("click", function () {
+          searchInput.value = "";
+          searchInput.focus();
+          clearSearch.style.display = "none";
+          searchHistory.style.display = "block";
+          searchResults.style.display = "none";
+          filterBar.style.display = "none";
+        });
+
+        // 点击搜索历史项
+        const historyItems = document.querySelectorAll(".search-history-text");
+        historyItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            const text = this.querySelector("span").textContent;
+            searchInput.value = text;
+            searchHistory.style.display = "none";
+            searchResults.style.display = "block";
+            filterBar.style.display = "flex";
+            clearSearch.style.display = "block";
+          });
+        });
+
+        // 删除搜索历史
+        const deleteButtons = document.querySelectorAll(
+          ".search-history-delete"
+        );
+        deleteButtons.forEach((button) => {
+          button.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.closest(".search-history-item").remove();
+          });
+        });
+
+        // 清空所有搜索历史
+        const clearHistoryButton = document.querySelector(
+          ".search-history-clear"
+        );
+        clearHistoryButton.addEventListener("click", function (e) {
+          e.preventDefault();
+          const historyItems = document.querySelectorAll(
+            ".search-history-item"
+          );
+          historyItems.forEach((item) => item.remove());
+        });
+
+        // 打开筛选抽屉
+        filterButton.addEventListener("click", function () {
+          filterDrawer.classList.add("open");
+          filterOverlay.classList.add("open");
+          document.body.style.overflow = "hidden";
+        });
+
+        // 关闭筛选抽屉
+        function closeFilterDrawer() {
+          filterDrawer.classList.remove("open");
+          filterOverlay.classList.remove("open");
+          document.body.style.overflow = "";
+        }
+
+        filterClose.addEventListener("click", closeFilterDrawer);
+        filterOverlay.addEventListener("click", closeFilterDrawer);
+
+        // 重置筛选选项
+        filterReset.addEventListener("click", function () {
+          filterOptions.forEach((option) => {
+            option.classList.remove("selected");
+          });
+          const priceInputs = document.querySelectorAll(".price-input");
+          priceInputs.forEach((input) => {
+            input.value = "";
+          });
+        });
+
+        // 应用筛选
+        filterApply.addEventListener("click", function () {
+          closeFilterDrawer();
+          // 这里可以添加实际筛选逻辑
+        });
+
+        // 选择筛选选项
+        filterOptions.forEach((option) => {
+          option.addEventListener("click", function () {
+            this.classList.toggle("selected");
+          });
+        });
+
+        // 过滤项点击
+        const filterItems = document.querySelectorAll(
+          ".filter-bar .filter-item"
+        );
+        filterItems.forEach((item) => {
+          if (item !== filterButton) {
+            item.addEventListener("click", function () {
+              filterItems.forEach((fi) => {
+                if (fi !== filterButton) {
+                  fi.classList.remove("active");
+                }
+              });
+              this.classList.add("active");
+            });
+          }
+        });
+
+        // 排序选项弹窗
+        sortFilter.addEventListener("click", function () {
+          const options = [
+            "默认排序",
+            "距离优先",
+            "评分优先",
+            "价格从低到高",
+            "价格从高到低",
+          ];
+
+          let html = '<div class="ios-alert">';
+          html += '<div class="ios-alert-title">排序方式</div>';
+          html +=
+            '<div class="ios-alert-actions" style="flex-direction: column; border-top: none;">';
+
+          options.forEach((option) => {
+            const isActive = this.textContent.includes(option);
+            html += `<button class="ios-alert-button" style="border-top: 1px solid var(--gray-5); ${
+              isActive ? "color: var(--primary-color);" : ""
+            }">${option}</button>`;
+          });
+
+          html +=
+            '<button class="ios-alert-button cancel" style="border-top: 1px solid var(--gray-5); margin-top: 5px;">取消</button>';
+          html += "</div></div>";
+
+          const alertElement = document.createElement("div");
+          alertElement.className = "ios-alert-overlay";
+          alertElement.innerHTML = html;
+
+          document.body.appendChild(alertElement);
+
+          const buttons = alertElement.querySelectorAll(".ios-alert-button");
+          buttons.forEach((button, index) => {
+            if (index < options.length) {
+              button.addEventListener("click", function () {
+                sortFilter.innerHTML = `<i class="fas fa-sort"></i> ${options[index]}`;
+                document.body.removeChild(alertElement);
+              });
+            } else {
+              button.addEventListener("click", function () {
+                document.body.removeChild(alertElement);
+              });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

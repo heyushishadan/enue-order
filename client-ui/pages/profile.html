@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>个人中心 - 场馆预约系统</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      .profile-header {
+        padding: 20px 15px;
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: white;
+        border-radius: 0 0 15px 15px;
+        margin-bottom: 15px;
+      }
+      .user-info {
+        display: flex;
+        align-items: center;
+      }
+      .avatar {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid white;
+        margin-right: 15px;
+      }
+      .user-text {
+        flex: 1;
+      }
+      .user-name {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .user-id {
+        font-size: 13px;
+        opacity: 0.8;
+      }
+      .edit-profile {
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 100px;
+        padding: 5px 12px;
+        font-size: 12px;
+        display: inline-block;
+        margin-top: 8px;
+      }
+      .stats-container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      .stat-item {
+        text-align: center;
+      }
+      .stat-value {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+      .stat-label {
+        font-size: 12px;
+        opacity: 0.8;
+      }
+      .menu-section {
+        background-color: white;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        overflow: hidden;
+      }
+      .menu-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid var(--gray-5);
+      }
+      .menu-item:last-child {
+        border-bottom: none;
+      }
+      .menu-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        font-size: 14px;
+      }
+      .menu-left {
+        display: flex;
+        align-items: center;
+      }
+      .menu-title {
+        font-size: 16px;
+      }
+      .menu-right {
+        display: flex;
+        align-items: center;
+        color: var(--gray-1);
+      }
+      .menu-right-text {
+        font-size: 14px;
+        margin-right: 5px;
+      }
+      .menu-right-icon {
+        font-size: 12px;
+      }
+      .icon-favorite {
+        background-color: rgba(255, 149, 0, 0.1);
+        color: var(--warning-color);
+      }
+      .icon-notification {
+        background-color: rgba(255, 59, 48, 0.1);
+        color: var(--danger-color);
+      }
+      .icon-wallet {
+        background-color: rgba(76, 217, 100, 0.1);
+        color: var(--success-color);
+      }
+      .icon-coupon {
+        background-color: rgba(255, 204, 0, 0.1);
+        color: #ffcc00;
+      }
+      .icon-activity {
+        background-color: rgba(90, 200, 250, 0.1);
+        color: var(--secondary-color);
+      }
+      .icon-feedback {
+        background-color: rgba(175, 82, 222, 0.1);
+        color: #af52de;
+      }
+      .icon-customer {
+        background-color: rgba(0, 122, 255, 0.1);
+        color: var(--primary-color);
+      }
+      .icon-settings {
+        background-color: rgba(142, 142, 147, 0.1);
+        color: var(--gray-1);
+      }
+      .notification-badge {
+        background-color: var(--danger-color);
+        color: white;
+        border-radius: 100px;
+        padding: 1px 6px;
+        font-size: 12px;
+        margin-left: 5px;
+      }
+      .logout-button {
+        background-color: white;
+        text-align: center;
+        padding: 15px;
+        border-radius: 10px;
+        color: var(--danger-color);
+        font-weight: 600;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- iOS状态栏 -->
+    <div class="ios-status-bar">
+      <div class="time">9:41</div>
+      <div class="status-icons">
+        <i class="fas fa-signal"></i>
+        <i class="fas fa-wifi"></i>
+        <i class="fas fa-battery-full"></i>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- 个人信息头部 -->
+      <div class="profile-header">
+        <div class="user-info">
+          <img
+            src="https://randomuser.me/api/portraits/men/32.jpg"
+            alt="用户头像"
+            class="avatar"
+          />
+          <div class="user-text">
+            <div class="user-name">李明</div>
+            <div class="user-id">ID: 10086798</div>
+            <a href="#" class="edit-profile">编辑资料</a>
+          </div>
+        </div>
+
+        <div class="stats-container">
+          <div class="stat-item">
+            <div class="stat-value">12</div>
+            <div class="stat-label">预约次数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">5</div>
+            <div class="stat-label">收藏场馆</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">2</div>
+            <div class="stat-label">优惠券</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 功能菜单 -->
+      <div class="menu-section">
+        <a href="favorites.html" class="menu-item">
+          <div class="menu-left">
+            <div class="menu-icon icon-favorite">
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="menu-title">我的收藏</div>
+          </div>
+          <div class="menu-right">
+            <div class="menu-right-text">5个场馆</div>
+            <i class="fas fa-chevron-right menu-right-icon"></i>
+          </div>
+        </a>
+
+        <a href="notifications.html" class="menu-item">
+          <div class="menu-left">
+            <div class="menu-icon icon-notification">
+              <i class="fas fa-bell"></i>
+            </div>
+            <div class="menu-title">消息通知</div>
+          </div>
+          <div class="menu-right">
+            <div class="notification-badge">3</div>
+            <i class="fas fa-chevron-right menu-right-icon"></i>
+          </div>
+        </a>
+
+        <a href="#" class="menu-item">
+          <div class="menu-left">
+            <div class="menu-icon icon-wallet">
+              <i class="fas fa-wallet"></i>
+            </div>
+            <div class="menu-title">我的钱包</div>
+          </div>
+          <div class="menu-right">
+            <i class="fas fa-chevron-right menu-right-icon"></i>
+          </div>
+        </a>
+
+        <a href="#" class="menu-item">
+          <div class="menu-left">
+            <div class="menu-icon icon-coupon">
+              <i class="fas fa-ticket-alt"></i>
+            </div>
+            <div class="menu-title">优惠券</div>
+          </div>
+          <div class="menu-right">
+            <div class="menu-right-text">2张可用</div>
+            <i class="fas fa-chevron-right menu-right-icon"></i>
+          </div>
+        </a>
+      </div>
+
+      <div class="menu-section">
+        <a href="#" class="menu-item">
+          <div class="menu-left">
+            <div class="menu-icon icon-feedback">
+              <i class="fas fa-comment-dots"></i>
+            </div>
+            <div class="menu-title">意见反馈</div>
+          </div>
+          <div class="menu-right">
+            <i class="fas fa-chevron-right menu-right-icon"></i>
+          </div>
+        </a>
+      </div>
+
+      <div class="menu-section">
+        <a href="settings.html" class="menu-item">
+          <div class="menu-left">
+            <div class="menu-icon icon-settings">
+              <i class="fas fa-cog"></i>
+            </div>
+            <div class="menu-title">设置</div>
+          </div>
+          <div class="menu-right">
+            <i class="fas fa-chevron-right menu-right-icon"></i>
+          </div>
+        </a>
+      </div>
+
+      <a href="login.html" class="logout-button" id="logoutButton">
+        退出登录
+      </a>
+    </div>
+
+    <!-- iOS底部标签栏 -->
+    <div class="ios-tab-bar">
+      <a class="tab-item" data-target="home.html">
+        <i class="fas fa-home"></i>
+        <span>首页</span>
+      </a>
+      <a class="tab-item" data-target="orders.html">
+        <i class="fas fa-calendar-alt"></i>
+        <span>订单</span>
+      </a>
+      <a class="tab-item active" data-target="profile.html">
+        <i class="fas fa-user"></i>
+        <span>我的</span>
+      </a>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 退出登录
+        document
+          .getElementById("logoutButton")
+          .addEventListener("click", function (e) {
+            e.preventDefault();
+            if (confirm("确定要退出登录吗？")) {
+              // 实际应用中应该执行登出逻辑，清除用户信息等
+              window.location.href = "login.html";
+            }
+          });
+      });
+    </script>
+  </body>
+</html>

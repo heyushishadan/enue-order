@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>订单管理 - 场馆预约系统</title>
+    <!-- 引入字体和图标 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../css/main.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <!-- 侧边栏 -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="mr-2"
+            >
+              <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+              <line x1="4" y1="22" x2="4" y2="15"></line>
+            </svg>
+            <span>场馆预约系统</span>
+          </div>
+          <div class="sidebar-toggle">
+            <i class="fas fa-bars"></i>
+          </div>
+        </div>
+        <div class="sidebar-menu">
+          <div class="menu-category">主要功能</div>
+          <a href="dashboard.html" class="menu-item">
+            <div class="menu-icon"><i class="fas fa-tachometer-alt"></i></div>
+            <div class="menu-text">控制台</div>
+          </a>
+          <a href="venues.html" class="menu-item">
+            <div class="menu-icon"><i class="fas fa-landmark"></i></div>
+            <div class="menu-text">场馆管理</div>
+          </a>
+          <a href="bookings.html" class="menu-item">
+            <div class="menu-icon"><i class="fas fa-calendar-alt"></i></div>
+            <div class="menu-text">预约管理</div>
+          </a>
+          <a href="orders.html" class="menu-item active">
+            <div class="menu-icon"><i class="fas fa-file-invoice"></i></div>
+            <div class="menu-text">订单管理</div>
+          </a>
+          <a href="users.html" class="menu-item">
+            <div class="menu-icon"><i class="fas fa-users"></i></div>
+            <div class="menu-text">用户管理</div>
+          </a>
+          <div class="menu-category">其他功能</div>
+          <a href="activities.html" class="menu-item">
+            <div class="menu-icon"><i class="fas fa-trophy"></i></div>
+            <div class="menu-text">活动管理</div>
+          </a>
+          <a href="comments.html" class="menu-item">
+            <div class="menu-icon"><i class="fas fa-comment-alt"></i></div>
+            <div class="menu-text">评价管理</div>
+          </a>
+          <a href="statistics.html" class="menu-item">
+            <div class="menu-icon"><i class="fas fa-chart-bar"></i></div>
+            <div class="menu-text">数据统计</div>
+          </a>
+          <div class="menu-category">系统设置</div>
+          <a href="notifications.html" class="menu-item">
+            <div class="menu-icon"><i class="fas fa-bell"></i></div>
+            <div class="menu-text">通知管理</div>
+          </a>
+          <a href="settings.html" class="menu-item">
+            <div class="menu-icon"><i class="fas fa-cog"></i></div>
+            <div class="menu-text">系统设置</div>
+          </a>
+        </div>
+      </aside>
+      <!-- 主内容区域 -->
+      <main class="main-content">
+        <!-- 顶部导航栏 -->
+        <header class="header">
+          <div class="header-title d-none d-md-block">订单管理</div>
+          <button class="btn d-md-none mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="header-actions">
+            <div class="search-bar d-none d-md-block">
+              <i class="fas fa-search search-icon"></i>
+              <input type="text" class="search-input" placeholder="搜索订单号、用户名或场馆名称..." />
+            </div>
+            <div class="notification-icon">
+              <i class="fas fa-bell"></i>
+              <div class="notification-badge">5</div>
+            </div>
+            <div class="settings-icon">
+              <i class="fas fa-cog"></i>
+            </div>
+            <div class="user-menu" data-toggle="dropdown">
+              <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="用户头像" class="user-avatar" />
+              <div class="user-info">
+                <div class="user-name">管理员</div>
+                <div class="user-role">超级管理员</div>
+              </div>
+              <i class="fas fa-chevron-down dropdown-icon"></i>
+              <div class="dropdown-menu">
+                <a href="profile.html" class="dropdown-item">
+                  <i class="fas fa-user-circle mr-2"></i>
+                  <span>个人资料</span>
+                </a>
+                <a href="settings.html" class="dropdown-item">
+                  <i class="fas fa-cog mr-2"></i>
+                  <span>系统设置</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item" id="logoutBtn">
+                  <i class="fas fa-sign-out-alt mr-2"></i>
+                  <span>退出登录</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+        <!-- 页面内容 -->
+        <div class="content">
+          <div class="page-title">
+            <h1>订单管理</h1>
+            <div class="page-actions">
+              <button class="btn btn-outline-primary mr-2">
+                <i class="fas fa-file-export mr-2"></i>
+                <span>导出订单</span>
+              </button>
+              <button class="btn btn-primary">
+                <i class="fas fa-sync-alt mr-2"></i>
+                <span>刷新数据</span>
+              </button>
+            </div>
+          </div>
+          <!-- 筛选和搜索 -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">订单状态</label>
+                  <select class="form-select" id="orderStatus">
+                    <option value="">全部状态</option>
+                    <option value="pending">待确认</option>
+                    <option value="confirmed">已确认</option>
+                    <option value="completed">已完成</option>
+                    <option value="cancelled">已取消</option>
+                  </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">开始日期</label>
+                  <input type="date" class="form-control" id="startDate" />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">结束日期</label>
+                  <input type="date" class="form-control" id="endDate" />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">关键词搜索</label>
+                  <input type="text" class="form-control" placeholder="订单号/用户名/场馆名称" id="searchKeyword" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 d-flex align-items-end justify-content-end">
+                  <button class="btn btn-outline-primary mr-2" id="resetFilterBtn">
+                    <i class="fas fa-redo mr-1"></i>重置
+                  </button>
+                  <button class="btn btn-primary" id="applyFilterBtn">
+                    <i class="fas fa-filter mr-1"></i>筛选
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 订单列表 -->
+          <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h2 class="card-title">订单列表</h2>
+              <div>
+                <span class="text-muted mr-2">共 <strong id="totalOrders">4</strong> 个订单</span>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>订单号</th>
+                      <th>用户</th>
+                      <th>场馆</th>
+                      <th>预约时间</th>
+                      <th>金额</th>
+                      <th>状态</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#ORD20240315001</td>
+                      <td>李明</td>
+                      <td>星动篮球馆</td>
+                      <td>2024-03-15 14:00-16:00</td>
+                      <td>¥160.00</td>
+                      <td><span class="badge bg-warning text-dark">待确认</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-primary mr-2">确认</button>
+                        <button class="btn btn-sm btn-danger">取消</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#ORD20240314002</td>
+                      <td>张华</td>
+                      <td>城市游泳中心</td>
+                      <td>2024-03-14 10:00-12:00</td>
+                      <td>¥120.00</td>
+                      <td><span class="badge bg-success">已确认</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-success mr-2">完成</button>
+                        <button class="btn btn-sm btn-danger">取消</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#ORD20240313003</td>
+                      <td>王芳</td>
+                      <td>飞羽羽毛球馆</td>
+                      <td>2024-03-13 19:00-21:00</td>
+                      <td>¥140.00</td>
+                      <td><span class="badge bg-secondary">已完成</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary">查看详情</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#ORD20240312004</td>
+                      <td>赵强</td>
+                      <td>力健健身中心</td>
+                      <td>2024-03-12 15:00-17:00</td>
+                      <td>¥200.00</td>
+                      <td><span class="badge bg-danger">已取消</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary">查看详情</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- 分页按钮区域，移到表格下方 -->
+              <div class="d-flex justify-content-end align-items-center p-3">
+                <button class="btn btn-outline-primary btn-sm mr-2">上一页</button>
+                <button class="btn btn-primary btn-sm active">1</button>
+                <button class="btn btn-outline-primary btn-sm">2</button>
+                <button class="btn btn-outline-primary btn-sm">3</button>
+                <button class="btn btn-outline-primary btn-sm ml-2">下一页</button>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="text-muted">显示 1 到 4，共 4 条记录</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script>
+      // 重置筛选
+      document.getElementById('resetFilterBtn').onclick = function() {
+        document.getElementById('orderStatus').value = '';
+        document.getElementById('startDate').value = '';
+        document.getElementById('endDate').value = '';
+        document.getElementById('searchKeyword').value = '';
+      };
+      // 筛选按钮
+      document.getElementById('applyFilterBtn').onclick = function() {
+        alert('筛选功能为原型演示，实际开发请对接后端接口。');
+      };
+    </script>
+  </body>
+</html>

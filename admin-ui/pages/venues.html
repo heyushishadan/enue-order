@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>场馆管理 - 场馆预约系统</title>
+    <!-- 引入字体和图标 -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css"
+    />
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/main.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <!-- 侧边栏 -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="mr-2"
+            >
+              <path
+                d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"
+              ></path>
+              <line x1="4" y1="22" x2="4" y2="15"></line>
+            </svg>
+            <span>场馆预约系统</span>
+          </div>
+          <div class="sidebar-toggle">
+            <i class="fas fa-bars"></i>
+          </div>
+        </div>
+
+        <div class="sidebar-menu">
+          <div class="menu-category">主要功能</div>
+
+          <a href="dashboard.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-tachometer-alt"></i>
+            </div>
+            <div class="menu-text">控制台</div>
+          </a>
+
+          <a href="venues.html" class="menu-item active">
+            <div class="menu-icon">
+              <i class="fas fa-landmark"></i>
+            </div>
+            <div class="menu-text">场馆管理</div>
+          </a>
+
+          <a href="bookings.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="menu-text">预约管理</div>
+          </a>
+
+          <a href="orders.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-file-invoice"></i>
+            </div>
+            <div class="menu-text">订单管理</div>
+          </a>
+
+          <a href="users.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="menu-text">用户管理</div>
+          </a>
+
+          <div class="menu-category">其他功能</div>
+
+          <a href="activities.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <div class="menu-text">活动管理</div>
+          </a>
+
+          <a href="comments.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-comment-alt"></i>
+            </div>
+            <div class="menu-text">评价管理</div>
+          </a>
+
+          <a href="statistics.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+            <div class="menu-text">数据统计</div>
+          </a>
+
+          <div class="menu-category">系统设置</div>
+
+          <a href="notifications.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-bell"></i>
+            </div>
+            <div class="menu-text">通知管理</div>
+          </a>
+
+          <a href="settings.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-cog"></i>
+            </div>
+            <div class="menu-text">系统设置</div>
+          </a>
+        </div>
+      </aside>
+
+      <!-- 主内容区域 -->
+      <main class="main-content">
+        <!-- 顶部导航栏 -->
+        <header class="header">
+          <div class="header-title d-none d-md-block">场馆管理</div>
+
+          <button class="btn d-md-none mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <div class="header-actions">
+            <div class="search-bar d-none d-md-block">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                class="search-input"
+                placeholder="搜索场馆..."
+              />
+            </div>
+
+            <div class="notification-icon">
+              <i class="fas fa-bell"></i>
+              <div class="notification-badge">5</div>
+            </div>
+
+            <div class="settings-icon">
+              <i class="fas fa-cog"></i>
+            </div>
+
+            <div class="user-menu" data-toggle="dropdown">
+              <img
+                src="https://randomuser.me/api/portraits/men/1.jpg"
+                alt="用户头像"
+                class="user-avatar"
+              />
+              <div class="user-info">
+                <div class="user-name">管理员</div>
+                <div class="user-role">超级管理员</div>
+              </div>
+              <i class="fas fa-chevron-down dropdown-icon"></i>
+
+              <div class="dropdown-menu">
+                <a href="profile.html" class="dropdown-item">
+                  <i class="fas fa-user-circle mr-2"></i>
+                  <span>个人资料</span>
+                </a>
+                <a href="settings.html" class="dropdown-item">
+                  <i class="fas fa-cog mr-2"></i>
+                  <span>系统设置</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item" id="logoutBtn">
+                  <i class="fas fa-sign-out-alt mr-2"></i>
+                  <span>退出登录</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- 页面内容 -->
+        <div class="content">
+          <div class="page-title">
+            <h1>场馆管理</h1>
+            <div class="page-actions">
+              <button
+                class="btn btn-outline-primary mr-2"
+                data-toggle="modal"
+                data-target="#importVenueModal"
+              >
+                <i class="fas fa-file-import mr-2"></i>
+                <span>导入场馆</span>
+              </button>
+              <button
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#addVenueModal"
+              >
+                <i class="fas fa-plus mr-2"></i>
+                <span>添加场馆</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 筛选功能 -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-3 col-md-6 mb-3">
+                  <div class="form-group mb-0">
+                    <label class="form-label">场馆分类</label>
+                    <select class="form-select" id="venueTypeFilter">
+                      <option value="">所有分类</option>
+                      <option value="basketball">篮球场</option>
+                      <option value="badminton">羽毛球场</option>
+                      <option value="football">足球场</option>
+                      <option value="swimming">游泳馆</option>
+                      <option value="gym">健身房</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                  <div class="form-group mb-0">
+                    <label class="form-label">场馆状态</label>
+                    <select class="form-select" id="venueStatusFilter">
+                      <option value="">所有状态</option>
+                      <option value="active">营业中</option>
+                      <option value="maintenance">维护中</option>
+                      <option value="closed">已关闭</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                  <div class="form-group mb-0">
+                    <label class="form-label">价格区间</label>
+                    <select class="form-select" id="venuePriceFilter">
+                      <option value="">所有价格</option>
+                      <option value="0-50">0-50元/小时</option>
+                      <option value="50-100">50-100元/小时</option>
+                      <option value="100-200">100-200元/小时</option>
+                      <option value="200">200元以上/小时</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                  <div class="form-group mb-0">
+                    <label class="form-label">排序方式</label>
+                    <select class="form-select" id="venueSortFilter">
+                      <option value="newest">最新添加</option>
+                      <option value="popularity">预约人气</option>
+                      <option value="price-asc">价格从低到高</option>
+                      <option value="price-desc">价格从高到低</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mt-3">
+                <div class="col-12 text-right">
+                  <button
+                    class="btn btn-outline-secondary mr-2"
+                    id="resetFilter"
+                  >
+                    <i class="fas fa-undo mr-2"></i>
+                    <span>重置筛选</span>
+                  </button>
+                  <button class="btn btn-primary" id="applyFilter">
+                    <i class="fas fa-filter mr-2"></i>
+                    <span>应用筛选</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 场馆列表 -->
+          <div class="card">
+            <div class="card-body">
+              <div class="table-container">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>
+                        <input type="checkbox" id="selectAll" />
+                      </th>
+                      <th>场馆ID</th>
+                      <th>场馆名称</th>
+                      <th>分类</th>
+                      <th>地址</th>
+                      <th>价格(元/小时)</th>
+                      <th>状态</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <input type="checkbox" class="venue-checkbox" />
+                      </td>
+                      <td>#V1001</td>
+                      <td>市体育中心篮球馆</td>
+                      <td>篮球场</td>
+                      <td>北京市朝阳区体育中心路1号</td>
+                      <td>120</td>
+                      <td><span class="badge badge-success">营业中</span></td>
+                      <td>
+                        <div class="table-actions">
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            data-toggle="modal"
+                            data-target="#editVenueModal"
+                          >
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button
+                            class="btn btn-sm btn-outline-info"
+                            data-toggle="modal"
+                            data-target="#viewVenueModal"
+                          >
+                            <i class="fas fa-eye"></i>
+                          </button>
+                          <button
+                            class="btn btn-sm btn-outline-danger"
+                            onclick="deleteVenue('#V1001')"
+                          >
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="checkbox" class="venue-checkbox" />
+                      </td>
+                      <td>#V1002</td>
+                      <td>阳光羽毛球馆</td>
+                      <td>羽毛球场</td>
+                      <td>北京市海淀区学院路15号</td>
+                      <td>80</td>
+                      <td><span class="badge badge-success">营业中</span></td>
+                      <td>
+                        <div class="table-actions">
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            data-toggle="modal"
+                            data-target="#editVenueModal"
+                          >
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button
+                            class="btn btn-sm btn-outline-info"
+                            data-toggle="modal"
+                            data-target="#viewVenueModal"
+                          >
+                            <i class="fas fa-eye"></i>
+                          </button>
+                          <button
+                            class="btn btn-sm btn-outline-danger"
+                            onclick="deleteVenue('#V1002')"
+                          >
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="checkbox" class="venue-checkbox" />
+                      </td>
+                      <td>#V1003</td>
+                      <td>阳光足球场</td>
+                      <td>足球场</td>
+                      <td>北京市海淀区西直门外大街137号</td>
+                      <td>200</td>
+                      <td><span class="badge badge-warning">维护中</span></td>
+                      <td>
+                        <div class="table-actions">
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            data-toggle="modal"
+                            data-target="#editVenueModal"
+                          >
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button
+                            class="btn btn-sm btn-outline-info"
+                            data-toggle="modal"
+                            data-target="#viewVenueModal"
+                          >
+                            <i class="fas fa-eye"></i>
+                          </button>
+                          <button
+                            class="btn btn-sm btn-outline-danger"
+                            onclick="deleteVenue('#V1003')"
+                          >
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="checkbox" class="venue-checkbox" />
+                      </td>
+                      <td>#V1004</td>
+                      <td>水立方游泳馆</td>
+                      <td>游泳馆</td>
+                      <td>北京市朝阳区天辰东路11号</td>
+                      <td>150</td>
+                      <td><span class="badge badge-success">营业中</span></td>
+                      <td>
+                        <div class="table-actions">
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            data-toggle="modal"
+                            data-target="#editVenueModal"
+                          >
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button
+                            class="btn btn-sm btn-outline-info"
+                            data-toggle="modal"
+                            data-target="#viewVenueModal"
+                          >
+                            <i class="fas fa-eye"></i>
+                          </button>
+                          <button
+                            class="btn btn-sm btn-outline-danger"
+                            onclick="deleteVenue('#V1004')"
+                          >
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="checkbox" class="venue-checkbox" />
+                      </td>
+                      <td>#V1005</td>
+                      <td>优健身房</td>
+                      <td>健身房</td>
+                      <td>北京市朝阳区建国门外大街甲6号</td>
+                      <td>100</td>
+                      <td><span class="badge badge-danger">已关闭</span></td>
+                      <td>
+                        <div class="table-actions">
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            data-toggle="modal"
+                            data-target="#editVenueModal"
+                          >
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button
+                            class="btn btn-sm btn-outline-info"
+                            data-toggle="modal"
+                            data-target="#viewVenueModal"
+                          >
+                            <i class="fas fa-eye"></i>
+                          </button>
+                          <button
+                            class="btn btn-sm btn-outline-danger"
+                            onclick="deleteVenue('#V1005')"
+                          >
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- 批量操作 -->
+              <div
+                class="d-flex justify-content-between align-items-center mt-3"
+              >
+                <div>
+                  <div class="btn-group">
+                    <button
+                      class="btn btn-outline-secondary dropdown-toggle"
+                      data-toggle="dropdown"
+                    >
+                      批量操作
+                    </button>
+                    <div class="dropdown-menu">
+                      <a href="#" class="dropdown-item">设为营业中</a>
+                      <a href="#" class="dropdown-item">设为维护中</a>
+                      <a href="#" class="dropdown-item">设为已关闭</a>
+                      <div class="dropdown-divider"></div>
+                      <a href="#" class="dropdown-item text-danger">批量删除</a>
+                    </div>
+                  </div>
+                  <span class="ml-3"
+                    >已选择 <span id="selectedCount">0</span> 项</span
+                  >
+                </div>
+
+                <!-- 分页 -->
+                <nav aria-label="场馆列表分页">
+                  <ul class="pagination">
+                    <li class="pagination-item">
+                      <a href="#" class="pagination-link">
+                        <i class="fas fa-chevron-left"></i>
+                      </a>
+                    </li>
+                    <li class="pagination-item">
+                      <a href="#" class="pagination-link active">1</a>
+                    </li>
+                    <li class="pagination-item">
+                      <a href="#" class="pagination-link">2</a>
+                    </li>
+                    <li class="pagination-item">
+                      <a href="#" class="pagination-link">3</a>
+                    </li>
+                    <li class="pagination-item">
+                      <div class="pagination-ellipsis">...</div>
+                    </li>
+                    <li class="pagination-item">
+                      <a href="#" class="pagination-link">10</a>
+                    </li>
+                    <li class="pagination-item">
+                      <a href="#" class="pagination-link">
+                        <i class="fas fa-chevron-right"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- 添加场馆模态框 -->
+    <div class="modal" id="addVenueModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">添加场馆</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="addVenueForm">
+              <div class="form-group">
+                <label class="form-label">场馆名称</label>
+                <input type="text" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">场馆分类</label>
+                <select class="form-select" required>
+                  <option value="">选择分类</option>
+                  <option value="basketball">篮球场</option>
+                  <option value="badminton">羽毛球场</option>
+                  <option value="football">足球场</option>
+                  <option value="swimming">游泳馆</option>
+                  <option value="gym">健身房</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">场馆地址</label>
+                <input type="text" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">价格(元/小时)</label>
+                <input type="number" class="form-control" min="0" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">场馆状态</label>
+                <select class="form-select" required>
+                  <option value="active">营业中</option>
+                  <option value="maintenance">维护中</option>
+                  <option value="closed">已关闭</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">场馆描述</label>
+                <textarea class="form-control" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">场馆图片</label>
+                <div class="custom-file">
+                  <input
+                    type="file"
+                    class="custom-file-input"
+                    id="venueImage"
+                    accept="image/*"
+                  />
+                  <label class="custom-file-label" for="venueImage"
+                    >选择图片</label
+                  >
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              取消
+            </button>
+            <button type="button" class="btn btn-primary" id="saveVenueBtn">
+              保存
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="../js/main.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 退出登录处理
+        const logoutBtn = document.getElementById("logoutBtn");
+        if (logoutBtn) {
+          logoutBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            if (confirm("确定要退出系统吗？")) {
+              window.location.href = "login.html";
+            }
+          });
+        }
+
+        // 全选/取消全选
+        const selectAllCheckbox = document.getElementById("selectAll");
+        const venueCheckboxes = document.querySelectorAll(".venue-checkbox");
+        const selectedCountElement = document.getElementById("selectedCount");
+
+        selectAllCheckbox.addEventListener("change", function () {
+          venueCheckboxes.forEach((checkbox) => {
+            checkbox.checked = this.checked;
+          });
+          updateSelectedCount();
+        });
+
+        venueCheckboxes.forEach((checkbox) => {
+          checkbox.addEventListener("change", function () {
+            updateSelectedCount();
+          });
+        });
+
+        function updateSelectedCount() {
+          const selectedCount = document.querySelectorAll(
+            ".venue-checkbox:checked"
+          ).length;
+          selectedCountElement.textContent = selectedCount;
+        }
+
+        // 删除场馆
+        window.deleteVenue = function (venueId) {
+          if (confirm(`确定要删除场馆 ${venueId} 吗？`)) {
+            alert(`场馆 ${venueId} 已删除`);
+          }
+        };
+
+        // 筛选重置
+        const resetFilterBtn = document.getElementById("resetFilter");
+        if (resetFilterBtn) {
+          resetFilterBtn.addEventListener("click", function () {
+            document.getElementById("venueTypeFilter").value = "";
+            document.getElementById("venueStatusFilter").value = "";
+            document.getElementById("venuePriceFilter").value = "";
+            document.getElementById("venueSortFilter").value = "newest";
+          });
+        }
+
+        // 保存场馆
+        const saveVenueBtn = document.getElementById("saveVenueBtn");
+        if (saveVenueBtn) {
+          saveVenueBtn.addEventListener("click", function () {
+            const form = document.getElementById("addVenueForm");
+            if (form.checkValidity()) {
+              alert("场馆保存成功！");
+              const modal = document.getElementById("addVenueModal");
+              modal.classList.remove("show");
+              document.body.classList.remove("modal-open");
+            } else {
+              form.reportValidity();
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

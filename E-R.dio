@@ -1,0 +1,73 @@
+<mxfile host="65bd71144e">
+    <diagram name="ER图" id="venue-reservation-system">
+        <mxGraphModel dx="1025" dy="1879" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="user" value="用户" style="shape=rectangle;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="60" width="80" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="venue" value="场馆" style="shape=rectangle;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="250" y="100" width="80" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="timeslotprice" value="时间段价格" style="shape=rectangle;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="540" y="60" width="100" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="reservation" value="预约" style="shape=rectangle;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="210" y="250" width="80" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="payment" value="支付" style="shape=rectangle;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="340" width="80" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="evaluation" value="评价" style="shape=rectangle;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="420" y="200" width="80" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="act_reserve" value="发起预约" style="shape=rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="70" y="140" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="act_pay" value="发起支付" style="shape=rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="70" y="210" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="act_evaluate" value="提交评价" style="shape=rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="330" y="-10" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="act_setprice" value="设置价格" style="shape=rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="380" y="30" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="user2act_reserve" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;" parent="1" source="user" target="act_reserve" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="act_reserve2reservation" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;" parent="1" source="act_reserve" target="reservation" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="reservation2act_pay" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;" parent="1" source="reservation" target="act_pay" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="act_pay2payment" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;" parent="1" source="act_pay" target="payment" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="user2act_evaluate" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;" parent="1" source="user" target="act_evaluate" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="act_evaluate2evaluation" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;" parent="1" source="act_evaluate" target="evaluation" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="venue2act_setprice" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;" parent="1" source="venue" target="act_setprice" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="act_setprice2timeslotprice" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;" parent="1" source="act_setprice" target="timeslotprice" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="user2reservation" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;" parent="1" source="user" target="reservation" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="venue2reservation" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;" parent="1" source="venue" target="reservation" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="venue2evaluation" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;" parent="1" source="venue" target="evaluation" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

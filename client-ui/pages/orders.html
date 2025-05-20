@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>我的订单 - 场馆预约系统</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      .order-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--gray-5);
+        background-color: white;
+        position: sticky;
+        top: 88px;
+        z-index: 10;
+      }
+      .order-tab {
+        flex: 1;
+        text-align: center;
+        padding: 12px 0;
+        font-size: 14px;
+        color: var(--gray-1);
+        position: relative;
+      }
+      .order-tab.active {
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+      .order-tab.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 3px;
+        background-color: var(--primary-color);
+        border-radius: 3px;
+      }
+      .order-item {
+        background-color: white;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+      }
+      .order-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 15px;
+        border-bottom: 1px solid var(--gray-5);
+        align-items: center;
+      }
+      .order-number {
+        font-size: 14px;
+        color: var(--gray-1);
+      }
+      .order-status {
+        font-size: 14px;
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+      .order-status.canceled {
+        color: var(--gray-1);
+      }
+      .order-status.completed {
+        color: var(--success-color);
+      }
+      .order-content {
+        padding: 15px;
+        display: flex;
+      }
+      .order-venue-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 5px;
+        object-fit: cover;
+        margin-right: 12px;
+      }
+      .order-info {
+        flex: 1;
+      }
+      .order-venue-name {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .order-detail {
+        color: var(--gray-1);
+        font-size: 14px;
+        margin-bottom: 3px;
+        display: flex;
+        align-items: center;
+      }
+      .order-detail i {
+        width: 15px;
+        margin-right: 5px;
+        font-size: 12px;
+        text-align: center;
+      }
+      .order-footer {
+        padding: 12px 15px;
+        border-top: 1px solid var(--gray-5);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .order-price {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--danger-color);
+      }
+      .order-actions {
+        display: flex;
+      }
+      .order-action-btn {
+        margin-left: 10px;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+      }
+      .primary-btn {
+        background-color: var(--primary-color);
+        color: white;
+      }
+      .outline-btn {
+        border: 1px solid var(--gray-4);
+        color: var(--gray-1);
+      }
+      .no-orders {
+        text-align: center;
+        padding: 60px 0;
+        color: var(--gray-1);
+      }
+      .no-orders i {
+        font-size: 60px;
+        color: var(--gray-3);
+        margin-bottom: 20px;
+      }
+      .tab-content {
+        padding-top: 15px;
+        min-height: calc(100vh - 88px - 45px - 83px);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- iOS状态栏 -->
+    <div class="ios-status-bar">
+      <div class="time">9:41</div>
+      <div class="status-icons">
+        <i class="fas fa-signal"></i>
+        <i class="fas fa-wifi"></i>
+        <i class="fas fa-battery-full"></i>
+      </div>
+    </div>
+
+    <!-- iOS导航栏 -->
+    <div class="ios-nav-bar">
+      <div class="left-button"></div>
+      <div class="title">我的订单</div>
+      <div class="right-button"></div>
+    </div>
+
+    <!-- 订单标签页 -->
+    <div class="order-tabs">
+      <div class="order-tab active" data-target="all-orders">全部</div>
+      <div class="order-tab" data-target="pending-orders">待使用</div>
+      <div class="order-tab" data-target="completed-orders">已完成</div>
+      <div class="order-tab" data-target="canceled-orders">已取消</div>
+    </div>
+
+    <div class="content">
+      <!-- 全部订单 -->
+      <div class="tab-content" id="all-orders">
+        <!-- 订单项 - 待使用 -->
+        <a href="order_detail.html" class="order-item">
+          <div class="order-header">
+            <div class="order-number">订单号: 202306150001</div>
+            <div class="order-status">待使用</div>
+          </div>
+          <div class="order-content">
+            <img
+              src="https://images.unsplash.com/photo-1580261450046-d0a30080dc9b?w=500&auto=format&fit=crop&q=60"
+              alt="星动篮球馆"
+              class="order-venue-image"
+            />
+            <div class="order-info">
+              <div class="order-venue-name">星动篮球馆</div>
+              <div class="order-detail">
+                <i class="far fa-calendar-alt"></i>
+                <span>2023年6月15日(今天)</span>
+              </div>
+              <div class="order-detail">
+                <i class="far fa-clock"></i>
+                <span>10:00 - 11:00</span>
+              </div>
+              <div class="order-detail">
+                <i class="fas fa-map"></i>
+                <span>A1场地</span>
+              </div>
+            </div>
+          </div>
+          <div class="order-footer">
+            <div class="order-price">¥85</div>
+            <div class="order-actions">
+              <button class="order-action-btn outline-btn">取消预约</button>
+              <a href="order_detail.html" class="order-action-btn primary-btn"
+                >查看详情</a
+              >
+            </div>
+          </div>
+        </a>
+
+        <!-- 订单项 - 已完成 -->
+        <a href="order_detail.html" class="order-item">
+          <div class="order-header">
+            <div class="order-number">订单号: 202306010002</div>
+            <div class="order-status completed">已完成</div>
+          </div>
+          <div class="order-content">
+            <img
+              src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&auto=format&fit=crop&q=60"
+              alt="力健健身中心"
+              class="order-venue-image"
+            />
+            <div class="order-info">
+              <div class="order-venue-name">力健健身中心</div>
+              <div class="order-detail">
+                <i class="far fa-calendar-alt"></i>
+                <span>2023年6月1日</span>
+              </div>
+              <div class="order-detail">
+                <i class="far fa-clock"></i>
+                <span>18:00 - 20:00</span>
+              </div>
+              <div class="order-detail">
+                <i class="fas fa-check-circle"></i>
+                <span>已使用</span>
+              </div>
+            </div>
+          </div>
+          <div class="order-footer">
+            <div class="order-price">¥200</div>
+            <div class="order-actions">
+              <a href="order_detail.html" class="order-action-btn outline-btn"
+                >再次预约</a
+              >
+              <a href="order_detail.html" class="order-action-btn primary-btn"
+                >查看详情</a
+              >
+            </div>
+          </div>
+        </a>
+
+        <!-- 订单项 - 已取消 -->
+        <a href="order_detail.html" class="order-item">
+          <div class="order-header">
+            <div class="order-number">订单号: 202305250003</div>
+            <div class="order-status canceled">已取消</div>
+          </div>
+          <div class="order-content">
+            <img
+              src="https://images.unsplash.com/photo-1529516548873-9ce57c8f155e?w=500&auto=format&fit=crop&q=60"
+              alt="飞羽羽毛球馆"
+              class="order-venue-image"
+            />
+            <div class="order-info">
+              <div class="order-venue-name">飞羽羽毛球馆</div>
+              <div class="order-detail">
+                <i class="far fa-calendar-alt"></i>
+                <span>2023年5月25日</span>
+              </div>
+              <div class="order-detail">
+                <i class="far fa-clock"></i>
+                <span>14:00 - 16:00</span>
+              </div>
+              <div class="order-detail">
+                <i class="fas fa-times-circle"></i>
+                <span>用户取消</span>
+              </div>
+            </div>
+          </div>
+          <div class="order-footer">
+            <div class="order-price">¥140</div>
+            <div class="order-actions">
+              <a href="order_detail.html" class="order-action-btn outline-btn"
+                >再次预约</a
+              >
+              <a href="order_detail.html" class="order-action-btn primary-btn"
+                >查看详情</a
+              >
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- 待使用订单 -->
+      <div class="tab-content" id="pending-orders" style="display: none">
+        <!-- 订单项 - 待使用 -->
+        <a href="order_detail.html" class="order-item">
+          <div class="order-header">
+            <div class="order-number">订单号: 202306150001</div>
+            <div class="order-status">待使用</div>
+          </div>
+          <div class="order-content">
+            <img
+              src="https://images.unsplash.com/photo-1580261450046-d0a30080dc9b?w=500&auto=format&fit=crop&q=60"
+              alt="星动篮球馆"
+              class="order-venue-image"
+            />
+            <div class="order-info">
+              <div class="order-venue-name">星动篮球馆</div>
+              <div class="order-detail">
+                <i class="far fa-calendar-alt"></i>
+                <span>2023年6月15日(今天)</span>
+              </div>
+              <div class="order-detail">
+                <i class="far fa-clock"></i>
+                <span>10:00 - 11:00</span>
+              </div>
+              <div class="order-detail">
+                <i class="fas fa-map"></i>
+                <span>A1场地</span>
+              </div>
+            </div>
+          </div>
+          <div class="order-footer">
+            <div class="order-price">¥85</div>
+            <div class="order-actions">
+              <button class="order-action-btn outline-btn">取消预约</button>
+              <a href="order_detail.html" class="order-action-btn primary-btn"
+                >查看详情</a
+              >
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- 已完成订单 -->
+      <div class="tab-content" id="completed-orders" style="display: none">
+        <!-- 订单项 - 已完成 -->
+        <a href="order_detail.html" class="order-item">
+          <div class="order-header">
+            <div class="order-number">订单号: 202306010002</div>
+            <div class="order-status completed">已完成</div>
+          </div>
+          <div class="order-content">
+            <img
+              src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&auto=format&fit=crop&q=60"
+              alt="力健健身中心"
+              class="order-venue-image"
+            />
+            <div class="order-info">
+              <div class="order-venue-name">力健健身中心</div>
+              <div class="order-detail">
+                <i class="far fa-calendar-alt"></i>
+                <span>2023年6月1日</span>
+              </div>
+              <div class="order-detail">
+                <i class="far fa-clock"></i>
+                <span>18:00 - 20:00</span>
+              </div>
+              <div class="order-detail">
+                <i class="fas fa-check-circle"></i>
+                <span>已使用</span>
+              </div>
+            </div>
+          </div>
+          <div class="order-footer">
+            <div class="order-price">¥200</div>
+            <div class="order-actions">
+              <a href="order_detail.html" class="order-action-btn outline-btn"
+                >再次预约</a
+              >
+              <a href="order_detail.html" class="order-action-btn primary-btn"
+                >查看详情</a
+              >
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- 已取消订单 -->
+      <div class="tab-content" id="canceled-orders" style="display: none">
+        <!-- 订单项 - 已取消 -->
+        <a href="order_detail.html" class="order-item">
+          <div class="order-header">
+            <div class="order-number">订单号: 202305250003</div>
+            <div class="order-status canceled">已取消</div>
+          </div>
+          <div class="order-content">
+            <img
+              src="https://images.unsplash.com/photo-1529516548873-9ce57c8f155e?w=500&auto=format&fit=crop&q=60"
+              alt="飞羽羽毛球馆"
+              class="order-venue-image"
+            />
+            <div class="order-info">
+              <div class="order-venue-name">飞羽羽毛球馆</div>
+              <div class="order-detail">
+                <i class="far fa-calendar-alt"></i>
+                <span>2023年5月25日</span>
+              </div>
+              <div class="order-detail">
+                <i class="far fa-clock"></i>
+                <span>14:00 - 16:00</span>
+              </div>
+              <div class="order-detail">
+                <i class="fas fa-times-circle"></i>
+                <span>用户取消</span>
+              </div>
+            </div>
+          </div>
+          <div class="order-footer">
+            <div class="order-price">¥140</div>
+            <div class="order-actions">
+              <a href="order_detail.html" class="order-action-btn outline-btn"
+                >再次预约</a
+              >
+              <a href="order_detail.html" class="order-action-btn primary-btn"
+                >查看详情</a
+              >
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- iOS底部标签栏 -->
+    <div class="ios-tab-bar">
+      <a class="tab-item" data-target="home.html">
+        <i class="fas fa-home"></i>
+        <span>首页</span>
+      </a>
+      <a class="tab-item active" data-target="orders.html">
+        <i class="fas fa-calendar-alt"></i>
+        <span>订单</span>
+      </a>
+      <a class="tab-item" data-target="profile.html">
+        <i class="fas fa-user"></i>
+        <span>我的</span>
+      </a>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 标签页切换
+        const tabButtons = document.querySelectorAll(".order-tab");
+        const tabContents = document.querySelectorAll(".tab-content");
+
+        tabButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            // 移除所有活动状态
+            tabButtons.forEach((btn) => btn.classList.remove("active"));
+            tabContents.forEach((content) => (content.style.display = "none"));
+
+            // 设置当前标签为活动状态
+            this.classList.add("active");
+            const targetId = this.getAttribute("data-target");
+            document.getElementById(targetId).style.display = "block";
+          });
+        });
+
+        // 取消预约按钮点击事件
+        const cancelButtons = document.querySelectorAll(".outline-btn");
+        cancelButtons.forEach((button) => {
+          if (button.textContent.trim() === "取消预约") {
+            button.addEventListener("click", function (e) {
+              e.preventDefault();
+              e.stopPropagation();
+
+              if (confirm("确定要取消此预约吗？取消可能会产生费用。")) {
+                alert("预约已取消");
+                // 实际应用中这里应该发送请求到服务器，然后刷新页面
+              }
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

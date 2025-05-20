@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>数据统计 - 场馆预约系统</title>
+    <!-- 引入字体和图标 -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css"
+    />
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/main.css" />
+    <!-- 引入Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="layout">
+      <!-- 侧边栏 -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="mr-2"
+            >
+              <path
+                d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"
+              ></path>
+              <line x1="4" y1="22" x2="4" y2="15"></line>
+            </svg>
+            <span>场馆预约系统</span>
+          </div>
+          <div class="sidebar-toggle">
+            <i class="fas fa-bars"></i>
+          </div>
+        </div>
+
+        <div class="sidebar-menu">
+          <div class="menu-category">主要功能</div>
+
+          <a href="dashboard.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-tachometer-alt"></i>
+            </div>
+            <div class="menu-text">控制台</div>
+          </a>
+
+          <a href="venues.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-landmark"></i>
+            </div>
+            <div class="menu-text">场馆管理</div>
+          </a>
+
+          <a href="bookings.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="menu-text">预约管理</div>
+          </a>
+
+          <a href="orders.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-file-invoice"></i>
+            </div>
+            <div class="menu-text">订单管理</div>
+          </a>
+
+          <a href="users.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="menu-text">用户管理</div>
+          </a>
+
+          <div class="menu-category">其他功能</div>
+
+          <a href="activities.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <div class="menu-text">活动管理</div>
+          </a>
+
+          <a href="evaluation.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-comment-alt"></i>
+            </div>
+            <div class="menu-text">评价管理</div>
+          </a>
+
+          <a href="statistics.html" class="menu-item active">
+            <div class="menu-icon">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+            <div class="menu-text">数据统计</div>
+          </a>
+
+          <div class="menu-category">系统设置</div>
+
+          <a href="notifications.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-bell"></i>
+            </div>
+            <div class="menu-text">通知管理</div>
+          </a>
+
+          <a href="settings.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-cog"></i>
+            </div>
+            <div class="menu-text">系统设置</div>
+          </a>
+        </div>
+      </aside>
+
+      <!-- 主内容区域 -->
+      <main class="main-content">
+        <!-- 顶部导航栏 -->
+        <nav class="navbar">
+          <div class="navbar-left">
+            <button class="btn btn-icon" id="sidebarToggle">
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input
+                type="text"
+                class="search-input"
+                placeholder="搜索..."
+              />
+            </div>
+          </div>
+          <div class="navbar-right">
+            <div class="user-info">
+              <img
+                src="https://via.placeholder.com/32"
+                alt="用户头像"
+                class="avatar"
+              />
+              <span class="username">管理员</span>
+            </div>
+          </div>
+        </nav>
+
+        <!-- 页面内容 -->
+        <div class="content">
+          <div class="page-title">
+            <h1>数据统计</h1>
+            <div class="page-actions">
+              <button class="btn btn-outline-primary mr-2">
+                <i class="fas fa-download mr-2"></i>
+                <span>导出报表</span>
+              </button>
+              <button class="btn btn-primary">
+                <i class="fas fa-sync-alt mr-2"></i>
+                <span>刷新数据</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 时间范围选择 -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">统计时间范围</label>
+                  <select class="form-select" id="timeRange">
+                    <option value="today">今天</option>
+                    <option value="week">本周</option>
+                    <option value="month" selected>本月</option>
+                    <option value="quarter">本季度</option>
+                    <option value="year">本年</option>
+                    <option value="custom">自定义</option>
+                  </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">开始日期</label>
+                  <input type="date" class="form-control" id="startDate" />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">结束日期</label>
+                  <input type="date" class="form-control" id="endDate" />
+                </div>
+                <div class="col-md-3 mb-3 d-flex align-items-end">
+                  <button class="btn btn-primary w-100">
+                    <i class="fas fa-filter mr-2"></i>
+                    <span>应用筛选</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 统计概览 -->
+          <div class="row mb-4">
+            <div class="col-md-3 col-sm-6 mb-3">
+              <div class="stats-card">
+                <div class="stats-icon primary">
+                  <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stats-info">
+                  <div class="stats-value">1,286</div>
+                  <div class="stats-label">总预约数</div>
+                  <div class="stats-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>较上月增长15.2%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 mb-3">
+              <div class="stats-card">
+                <div class="stats-icon success">
+                  <i class="fas fa-coins"></i>
+                </div>
+                <div class="stats-info">
+                  <div class="stats-value">¥89,562</div>
+                  <div class="stats-label">总收入</div>
+                  <div class="stats-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>较上月增长12.8%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 mb-3">
+              <div class="stats-card">
+                <div class="stats-icon warning">
+                  <i class="fas fa-users"></i>
+                </div>
+                <div class="stats-info">
+                  <div class="stats-value">856</div>
+                  <div class="stats-label">活跃用户</div>
+                  <div class="stats-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>较上月增长8.5%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 mb-3">
+              <div class="stats-card">
+                <div class="stats-icon danger">
+                  <i class="fas fa-star"></i>
+                </div>
+                <div class="stats-info">
+                  <div class="stats-value">4.8</div>
+                  <div class="stats-label">平均评分</div>
+                  <div class="stats-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>较上月增长0.2</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 图表区域 -->
+          <div class="row">
+            <!-- 预约趋势图 -->
+            <div class="col-lg-8 mb-4">
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">预约趋势分析</h2>
+                  <div class="card-actions">
+                    <button class="btn btn-sm">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <canvas id="bookingTrendChart" height="300"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- 场馆使用率 -->
+            <div class="col-lg-4 mb-4">
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">场馆使用率</h2>
+                  <div class="card-actions">
+                    <button class="btn btn-sm">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <canvas id="venueUsageChart" height="300"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- 收入分析 -->
+            <div class="col-lg-6 mb-4">
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">收入分析</h2>
+                  <div class="card-actions">
+                    <button class="btn btn-sm">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <canvas id="revenueChart" height="300"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- 用户活跃度 -->
+            <div class="col-lg-6 mb-4">
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">用户活跃度分析</h2>
+                  <div class="card-actions">
+                    <button class="btn btn-sm">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <canvas id="userActivityChart" height="300"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 场馆排名 -->
+          <div class="row">
+            <div class="col-12 mb-4">
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">场馆预约排名</h2>
+                  <div class="card-actions">
+                    <button class="btn btn-sm">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="table-container">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>排名</th>
+                          <th>场馆名称</th>
+                          <th>预约次数</th>
+                          <th>总收入</th>
+                          <th>平均评分</th>
+                          <th>使用率</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td>篮球场A</td>
+                          <td>286</td>
+                          <td>¥28,600</td>
+                          <td>4.9</td>
+                          <td>92%</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>羽毛球场B</td>
+                          <td>245</td>
+                          <td>¥24,500</td>
+                          <td>4.8</td>
+                          <td>88%</td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>游泳馆C</td>
+                          <td>198</td>
+                          <td>¥39,600</td>
+                          <td>4.7</td>
+                          <td>85%</td>
+                        </tr>
+                        <tr>
+                          <td>4</td>
+                          <td>健身房D</td>
+                          <td>156</td>
+                          <td>¥31,200</td>
+                          <td>4.6</td>
+                          <td>82%</td>
+                        </tr>
+                        <tr>
+                          <td>5</td>
+                          <td>网球场E</td>
+                          <td>142</td>
+                          <td>¥28,400</td>
+                          <td>4.5</td>
+                          <td>78%</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="../js/main.js"></script>
+    <script>
+      // 初始化图表
+      document.addEventListener("DOMContentLoaded", function () {
+        // 预约趋势图
+        const bookingTrendCtx = document
+          .getElementById("bookingTrendChart")
+          .getContext("2d");
+        new Chart(bookingTrendCtx, {
+          type: "line",
+          data: {
+            labels: [
+              "1月",
+              "2月",
+              "3月",
+              "4月",
+              "5月",
+              "6月",
+              "7月",
+              "8月",
+              "9月",
+              "10月",
+              "11月",
+              "12月",
+            ],
+            datasets: [
+              {
+                label: "预约数量",
+                data: [65, 59, 80, 81, 56, 55, 40, 45, 60, 75, 85, 90],
+                borderColor: "rgba(59, 130, 246, 1)",
+                backgroundColor: "rgba(59, 130, 246, 0.1)",
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: "top",
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+
+        // 场馆使用率图
+        const venueUsageCtx = document
+          .getElementById("venueUsageChart")
+          .getContext("2d");
+        new Chart(venueUsageCtx, {
+          type: "doughnut",
+          data: {
+            labels: ["已使用", "空闲"],
+            datasets: [
+              {
+                data: [75, 25],
+                backgroundColor: [
+                  "rgba(59, 130, 246, 0.8)",
+                  "rgba(229, 231, 235, 0.8)",
+                ],
+                borderWidth: 0,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        });
+
+        // 收入分析图
+        const revenueCtx = document
+          .getElementById("revenueChart")
+          .getContext("2d");
+        new Chart(revenueCtx, {
+          type: "bar",
+          data: {
+            labels: ["篮球场", "羽毛球场", "游泳馆", "健身房", "网球场"],
+            datasets: [
+              {
+                label: "收入（元）",
+                data: [28600, 24500, 39600, 31200, 28400],
+                backgroundColor: [
+                  "rgba(59, 130, 246, 0.7)",
+                  "rgba(16, 185, 129, 0.7)",
+                  "rgba(245, 158, 11, 0.7)",
+                  "rgba(99, 102, 241, 0.7)",
+                  "rgba(239, 68, 68, 0.7)",
+                ],
+                borderWidth: 0,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+
+        // 用户活跃度图
+        const userActivityCtx = document
+          .getElementById("userActivityChart")
+          .getContext("2d");
+        new Chart(userActivityCtx, {
+          type: "line",
+          data: {
+            labels: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+            datasets: [
+              {
+                label: "活跃用户数",
+                data: [120, 190, 135, 221, 189, 98, 132],
+                borderColor: "rgba(16, 185, 129, 1)",
+                backgroundColor: "rgba(16, 185, 129, 0.1)",
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: "top",
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      });
+    </script>
+  </body>
+</html> 

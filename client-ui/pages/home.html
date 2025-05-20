@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>首页 - 场馆预约系统</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      .banner {
+        height: 200px;
+        border-radius: 10px;
+        overflow: hidden;
+        position: relative;
+        margin-bottom: 20px;
+      }
+      .banner img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .banner-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 15px;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.7),
+          rgba(0, 0, 0, 0)
+        );
+        color: white;
+      }
+      .banner-title {
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .banner-subtitle {
+        font-size: 14px;
+        opacity: 0.9;
+      }
+      .category-section {
+        margin-bottom: 25px;
+      }
+      .category-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .see-all {
+        color: var(--primary-color);
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .category-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+      .category-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .category-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 15px;
+        background-color: rgba(0, 122, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 8px;
+      }
+      .category-icon i {
+        font-size: 24px;
+        color: var(--primary-color);
+      }
+      .category-name {
+        font-size: 13px;
+        color: var(--black);
+      }
+      .venue-card {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 15px;
+        background-color: white;
+      }
+      .venue-image {
+        height: 150px;
+        width: 100%;
+        object-fit: cover;
+      }
+      .venue-info {
+        padding: 12px;
+      }
+      .venue-name {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .venue-address {
+        font-size: 13px;
+        color: var(--gray-1);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+      }
+      .venue-address i {
+        margin-right: 5px;
+        font-size: 12px;
+      }
+      .venue-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+      }
+      .venue-rating {
+        display: flex;
+        align-items: center;
+        color: var(--warning-color);
+      }
+      .venue-rating span {
+        color: var(--black);
+        margin-left: 4px;
+      }
+      .venue-price {
+        color: var(--danger-color);
+        font-weight: 500;
+      }
+      .venue-tags {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+      .venue-tag {
+        font-size: 12px;
+        background-color: var(--gray-5);
+        padding: 3px 8px;
+        border-radius: 100px;
+        margin-right: 6px;
+        margin-bottom: 6px;
+        color: var(--gray-1);
+      }
+      .venue-row {
+        display: flex;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .venue-row::-webkit-scrollbar {
+        display: none;
+      }
+      .venue-row .venue-card {
+        flex: 0 0 auto;
+        width: 250px;
+        margin-right: 12px;
+      }
+      .venue-row .venue-card:last-child {
+        margin-right: 0;
+      }
+      .recent-venues {
+        margin-bottom: 20px;
+      }
+      .recent-venue {
+        display: flex;
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 10px;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+      }
+      .recent-venue-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+      }
+      .recent-venue-info {
+        flex: 1;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .ios-search-bar {
+        margin-bottom: 15px;
+      }
+      .carousel-container {
+        position: relative;
+        margin-bottom: 20px;
+      }
+      .ios-carousel {
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .ios-carousel-slide {
+        height: 200px;
+        position: relative;
+      }
+      .ios-carousel-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- iOS状态栏 -->
+    <div class="ios-status-bar">
+      <div class="time">9:41</div>
+      <div class="status-icons">
+        <i class="fas fa-signal"></i>
+        <i class="fas fa-wifi"></i>
+        <i class="fas fa-battery-full"></i>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- 搜索栏 -->
+      <div class="ios-search-bar">
+        <i class="fas fa-search"></i>
+        <input
+          type="text"
+          placeholder="搜索场馆"
+          onclick="window.location.href='search.html'"
+        />
+      </div>
+
+      <!-- 轮播图 -->
+      <div class="carousel-container">
+        <div class="ios-carousel">
+          <div class="ios-carousel-slide" style="display: block">
+            <img
+              src="https://images.unsplash.com/photo-1590227632180-80a3bf110871?w=500&auto=format&fit=crop&q=60"
+              alt="促销活动"
+            />
+            <div class="banner-content">
+              <h3 class="banner-title">夏季特惠</h3>
+              <p class="banner-subtitle">健身房预约享7折优惠</p>
+            </div>
+          </div>
+          <div class="ios-carousel-slide" style="display: none">
+            <img
+              src="https://images.unsplash.com/photo-1591343395082-e120087004b4?w=500&auto=format&fit=crop&q=60"
+              alt="新场馆"
+            />
+            <div class="banner-content">
+              <h3 class="banner-title">全新羽毛球馆</h3>
+              <p class="banner-subtitle">专业场地，舒适体验</p>
+            </div>
+          </div>
+          <div class="ios-carousel-slide" style="display: none">
+            <img
+              src="https://images.unsplash.com/photo-1543245871-b631bb0bc907?w=500&auto=format&fit=crop&q=60"
+              alt="活动信息"
+            />
+            <div class="banner-content">
+              <h3 class="banner-title">城市篮球赛</h3>
+              <p class="banner-subtitle">6月15日开始报名</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ios-carousel-dots">
+          <div class="ios-carousel-dot active"></div>
+          <div class="ios-carousel-dot"></div>
+          <div class="ios-carousel-dot"></div>
+        </div>
+      </div>
+
+      <!-- 场馆分类 -->
+      <div class="category-section">
+        <div class="category-title">
+          <span>场馆分类</span>
+          <a href="#" class="see-all">查看全部</a>
+        </div>
+        <div class="category-grid">
+          <a href="#" class="category-item">
+            <div class="category-icon">
+              <i class="fas fa-basketball-ball"></i>
+            </div>
+            <span class="category-name">篮球场</span>
+          </a>
+          <a href="#" class="category-item">
+            <div class="category-icon">
+              <i class="fas fa-table-tennis"></i>
+            </div>
+            <span class="category-name">乒乓球室</span>
+          </a>
+          <a href="#" class="category-item">
+            <div class="category-icon">
+              <i class="fas fa-swimming-pool"></i>
+            </div>
+            <span class="category-name">游泳馆</span>
+          </a>
+          <a href="#" class="category-item">
+            <div class="category-icon">
+              <i class="fas fa-dumbbell"></i>
+            </div>
+            <span class="category-name">健身房</span>
+          </a>
+          <a href="#" class="category-item">
+            <div class="category-icon">
+              <i class="fas fa-futbol"></i>
+            </div>
+            <span class="category-name">足球场</span>
+          </a>
+          <a href="#" class="category-item">
+            <div class="category-icon">
+              <i class="fas fa-volleyball-ball"></i>
+            </div>
+            <span class="category-name">排球场</span>
+          </a>
+          <a href="#" class="category-item">
+            <div class="category-icon">
+              <i class="fas fa-running"></i>
+            </div>
+            <span class="category-name">田径场</span>
+          </a>
+          <a href="#" class="category-item">
+            <div class="category-icon">
+              <i class="fas fa-ellipsis-h"></i>
+            </div>
+            <span class="category-name">更多</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 推荐场馆 -->
+      <div class="category-section">
+        <div class="category-title">
+          <span>推荐场馆</span>
+          <a href="#" class="see-all">查看全部</a>
+        </div>
+        <div class="venue-row">
+          <a href="venue_detail.html" class="venue-card">
+            <img
+              src="https://images.unsplash.com/photo-1580261450046-d0a30080dc9b?w=500&auto=format&fit=crop&q=60"
+              alt="星动篮球馆"
+              class="venue-image"
+            />
+            <div class="venue-info">
+              <h3 class="venue-name">星动篮球馆</h3>
+              <p class="venue-address">
+                <i class="fas fa-map-marker-alt"></i>
+                海淀区新源南路8号
+              </p>
+              <div class="venue-meta">
+                <div class="venue-rating">
+                  <i class="fas fa-star"></i>
+                  <span>4.8 (124条评价)</span>
+                </div>
+                <div class="venue-price">¥80/小时起</div>
+              </div>
+              <div class="venue-tags">
+                <span class="venue-tag">干净整洁</span>
+                <span class="venue-tag">专业木地板</span>
+              </div>
+            </div>
+          </a>
+          <a href="venue_detail.html" class="venue-card">
+            <img
+              src="https://images.unsplash.com/photo-1448743133657-56d4745cee20?w=500&auto=format&fit=crop&q=60"
+              alt="城市游泳中心"
+              class="venue-image"
+            />
+            <div class="venue-info">
+              <h3 class="venue-name">城市游泳中心</h3>
+              <p class="venue-address">
+                <i class="fas fa-map-marker-alt"></i>
+                朝阳区建国路88号
+              </p>
+              <div class="venue-meta">
+                <div class="venue-rating">
+                  <i class="fas fa-star"></i>
+                  <span>4.6 (98条评价)</span>
+                </div>
+                <div class="venue-price">¥60/小时起</div>
+              </div>
+              <div class="venue-tags">
+                <span class="venue-tag">恒温泳池</span>
+                <span class="venue-tag">水质优</span>
+              </div>
+            </div>
+          </a>
+          <a href="venue_detail.html" class="venue-card">
+            <img
+              src="https://images.unsplash.com/photo-1529516548873-9ce57c8f155e?w=500&auto=format&fit=crop&q=60"
+              alt="飞羽羽毛球馆"
+              class="venue-image"
+            />
+            <div class="venue-info">
+              <h3 class="venue-name">飞羽羽毛球馆</h3>
+              <p class="venue-address">
+                <i class="fas fa-map-marker-alt"></i>
+                海淀区学院路15号
+              </p>
+              <div class="venue-meta">
+                <div class="venue-rating">
+                  <i class="fas fa-star"></i>
+                  <span>4.5 (87条评价)</span>
+                </div>
+                <div class="venue-price">¥70/小时起</div>
+              </div>
+              <div class="venue-tags">
+                <span class="venue-tag">标准场地</span>
+                <span class="venue-tag">灯光充足</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 热门场馆 -->
+      <div class="category-section">
+        <div class="category-title">
+          <span>热门场馆</span>
+          <a href="#" class="see-all">查看全部</a>
+        </div>
+        <div class="venue-row">
+          <a href="venue_detail.html" class="venue-card">
+            <img
+              src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&auto=format&fit=crop&q=60"
+              alt="力健健身中心"
+              class="venue-image"
+            />
+            <div class="venue-info">
+              <h3 class="venue-name">力健健身中心</h3>
+              <p class="venue-address">
+                <i class="fas fa-map-marker-alt"></i>
+                东城区东直门外大街42号
+              </p>
+              <div class="venue-meta">
+                <div class="venue-rating">
+                  <i class="fas fa-star"></i>
+                  <span>4.7 (153条评价)</span>
+                </div>
+                <div class="venue-price">¥100/次起</div>
+              </div>
+              <div class="venue-tags">
+                <span class="venue-tag">器械齐全</span>
+                <span class="venue-tag">专业教练</span>
+              </div>
+            </div>
+          </a>
+          <a href="venue_detail.html" class="venue-card">
+            <img
+              src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=500&auto=format&fit=crop&q=60"
+              alt="阳光网球场"
+              class="venue-image"
+            />
+            <div class="venue-info">
+              <h3 class="venue-name">阳光网球场</h3>
+              <p class="venue-address">
+                <i class="fas fa-map-marker-alt"></i>
+                顺义区后沙峪镇安富街10号
+              </p>
+              <div class="venue-meta">
+                <div class="venue-rating">
+                  <i class="fas fa-star"></i>
+                  <span>4.4 (92条评价)</span>
+                </div>
+                <div class="venue-price">¥120/小时起</div>
+              </div>
+              <div class="venue-tags">
+                <span class="venue-tag">室内场地</span>
+                <span class="venue-tag">可提供器材</span>
+              </div>
+            </div>
+          </a>
+          <a href="venue_detail.html" class="venue-card">
+            <img
+              src="https://images.unsplash.com/photo-1599058917765-a780eda07a3e?w=500&auto=format&fit=crop&q=60"
+              alt="凯旋足球场"
+              class="venue-image"
+            />
+            <div class="venue-info">
+              <h3 class="venue-name">凯旋足球场</h3>
+              <p class="venue-address">
+                <i class="fas fa-map-marker-alt"></i>
+                丰台区丰台南路78号
+              </p>
+              <div class="venue-meta">
+                <div class="venue-rating">
+                  <i class="fas fa-star"></i>
+                  <span>4.3 (76条评价)</span>
+                </div>
+                <div class="venue-price">¥500/小时起</div>
+              </div>
+              <div class="venue-tags">
+                <span class="venue-tag">标准11人场</span>
+                <span class="venue-tag">人造草皮</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 最近使用 -->
+      <div class="recent-venues">
+        <div class="category-title">
+          <span>最近使用</span>
+        </div>
+        <a href="venue_detail.html" class="recent-venue">
+          <img
+            src="https://images.unsplash.com/photo-1580261450046-d0a30080dc9b?w=500&auto=format&fit=crop&q=60"
+            alt="星动篮球馆"
+            class="recent-venue-image"
+          />
+          <div class="recent-venue-info">
+            <h3 class="venue-name">星动篮球馆</h3>
+            <p class="venue-address">
+              <i class="fas fa-map-marker-alt"></i>
+              海淀区新源南路8号
+            </p>
+            <div class="venue-meta">
+              <div class="venue-rating">
+                <i class="fas fa-star"></i>
+                <span>4.8</span>
+              </div>
+              <div class="venue-price">上次使用: 昨天</div>
+            </div>
+          </div>
+        </a>
+        <a href="venue_detail.html" class="recent-venue">
+          <img
+            src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&auto=format&fit=crop&q=60"
+            alt="力健健身中心"
+            class="recent-venue-image"
+          />
+          <div class="recent-venue-info">
+            <h3 class="venue-name">力健健身中心</h3>
+            <p class="venue-address">
+              <i class="fas fa-map-marker-alt"></i>
+              东城区东直门外大街42号
+            </p>
+            <div class="venue-meta">
+              <div class="venue-rating">
+                <i class="fas fa-star"></i>
+                <span>4.7</span>
+              </div>
+              <div class="venue-price">上次使用: 3天前</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- iOS底部标签栏 -->
+    <div class="ios-tab-bar">
+      <a class="tab-item active" data-target="home.html">
+        <i class="fas fa-home"></i>
+        <span>首页</span>
+      </a>
+      <a class="tab-item" data-target="orders.html">
+        <i class="fas fa-calendar-alt"></i>
+        <span>订单</span>
+      </a>
+      <a class="tab-item" data-target="profile.html">
+        <i class="fas fa-user"></i>
+        <span>我的</span>
+      </a>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 初始化轮播图
+        setupCarousel();
+      });
+    </script>
+  </body>
+</html>

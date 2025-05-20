@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>场馆预约系统 - 管理端原型预览</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/main.css" />
+    <style>
+      body {
+        background-color: #f5f7fb;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px 20px;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 10px;
+      }
+      .subtitle {
+        font-size: 16px;
+        color: #4a5568;
+      }
+      .pages-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 25px;
+      }
+      .page-card {
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .page-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+      }
+      .page-preview {
+        width: 100%;
+        height: 200px;
+        position: relative;
+        background-color: #f1f5f9;
+        overflow: hidden;
+      }
+      .page-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .page-preview iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        transform: scale(0.7);
+        transform-origin: 0 0;
+        pointer-events: none;
+      }
+      .preview-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          to bottom,
+          transparent 70%,
+          rgba(0, 0, 0, 0.1)
+        );
+      }
+      .page-info {
+        padding: 15px;
+      }
+      .page-name {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #2d3748;
+      }
+      .page-description {
+        font-size: 14px;
+        color: #718096;
+        margin-bottom: 15px;
+      }
+      .page-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .view-btn {
+        background-color: #4299e1;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        transition: background-color 0.3s;
+      }
+      .view-btn:hover {
+        background-color: #3182ce;
+      }
+      .page-status {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      .status-completed {
+        background-color: #c6f6d5;
+        color: #276749;
+      }
+      .status-in-progress {
+        background-color: #fefcbf;
+        color: #975a16;
+      }
+      .status-pending {
+        background-color: #e2e8f0;
+        color: #4a5568;
+      }
+      .future-pages {
+        margin-top: 50px;
+      }
+      .future-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #2d3748;
+      }
+      .footer {
+        margin-top: 60px;
+        text-align: center;
+        color: #718096;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 class="title">场馆预约系统 - 管理端原型</h1>
+        <p class="subtitle">
+          本页面展示场馆预约系统管理端的高保真原型页面，用于演示系统功能和交互流程
+        </p>
+      </div>
+
+      <div class="pages-grid">
+        <!-- 登录页 -->
+        <div class="page-card">
+          <div class="page-preview">
+            <iframe src="pages/login.html" title="登录页"></iframe>
+            <div class="preview-overlay"></div>
+          </div>
+          <div class="page-info">
+            <h3 class="page-name">登录页面</h3>
+            <p class="page-description">
+              系统登录入口，提供账号密码登录和记住账号功能
+            </p>
+            <div class="page-actions">
+              <a href="pages/login.html" target="_blank" class="view-btn">
+                查看页面
+              </a>
+              <span class="page-status status-completed">已完成</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 控制台 -->
+        <div class="page-card">
+          <div class="page-preview">
+            <iframe src="pages/dashboard.html" title="控制台"></iframe>
+            <div class="preview-overlay"></div>
+          </div>
+          <div class="page-info">
+            <h3 class="page-name">控制台</h3>
+            <p class="page-description">
+              系统数据概览，展示关键指标、最近预约和统计图表
+            </p>
+            <div class="page-actions">
+              <a href="pages/dashboard.html" target="_blank" class="view-btn">
+                查看页面
+              </a>
+              <span class="page-status status-completed">已完成</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 场馆管理 -->
+        <div class="page-card">
+          <div class="page-preview">
+            <iframe src="pages/venues.html" title="场馆管理"></iframe>
+            <div class="preview-overlay"></div>
+          </div>
+          <div class="page-info">
+            <h3 class="page-name">场馆管理</h3>
+            <p class="page-description">
+              场馆信息的增删改查，支持筛选、搜索和批量操作
+            </p>
+            <div class="page-actions">
+              <a href="pages/venues.html" target="_blank" class="view-btn">
+                查看页面
+              </a>
+              <span class="page-status status-completed">已完成</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 订单管理 -->
+        <div class="page-card">
+          <div class="page-preview">
+            <div class="flex items-center justify-center h-full bg-gray-100">
+              <i class="fas fa-clipboard-list text-5xl text-gray-400"></i>
+            </div>
+            <div class="preview-overlay"></div>
+          </div>
+          <div class="page-info">
+            <h3 class="page-name">订单管理</h3>
+            <p class="page-description">
+              查看和处理用户的预约订单，支持状态更改和退款处理
+            </p>
+            <div class="page-actions">
+              <a
+                href="#"
+                class="view-btn"
+                style="opacity: 0.6; pointer-events: none"
+              >
+                查看页面
+              </a>
+              <span class="page-status status-pending">待开发</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 用户管理 -->
+        <div class="page-card">
+          <div class="page-preview">
+            <div class="flex items-center justify-center h-full bg-gray-100">
+              <i class="fas fa-users text-5xl text-gray-400"></i>
+            </div>
+            <div class="preview-overlay"></div>
+          </div>
+          <div class="page-info">
+            <h3 class="page-name">用户管理</h3>
+            <p class="page-description">
+              用户账号管理，查看用户信息和预约历史，权限设置
+            </p>
+            <div class="page-actions">
+              <a
+                href="#"
+                class="view-btn"
+                style="opacity: 0.6; pointer-events: none"
+              >
+                查看页面
+              </a>
+              <span class="page-status status-pending">待开发</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 预约管理 -->
+        <div class="page-card">
+          <div class="page-preview">
+            <div class="flex items-center justify-center h-full bg-gray-100">
+              <i class="fas fa-calendar-alt text-5xl text-gray-400"></i>
+            </div>
+            <div class="preview-overlay"></div>
+          </div>
+          <div class="page-info">
+            <h3 class="page-name">预约管理</h3>
+            <p class="page-description">
+              管理场馆的可预约时段，设置特殊日期规则和价格策略
+            </p>
+            <div class="page-actions">
+              <a
+                href="#"
+                class="view-btn"
+                style="opacity: 0.6; pointer-events: none"
+              >
+                查看页面
+              </a>
+              <span class="page-status status-pending">待开发</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 评价管理 -->
+        <div class="page-card">
+          <div class="page-preview">
+            <iframe src="pages/evaluation.html" title="评价管理"></iframe>
+            <div class="preview-overlay"></div>
+          </div>
+          <div class="page-info">
+            <h3 class="page-name">评价管理</h3>
+            <p class="page-description">
+              管理用户对场馆的评价和反馈，支持回复和删除操作
+            </p>
+            <div class="page-actions">
+              <a href="pages/evaluation.html" target="_blank" class="view-btn">
+                查看页面
+              </a>
+              <span class="page-status status-completed">已完成</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 管理员注册 -->
+        <div class="page-card">
+          <div class="page-preview">
+            <iframe src="pages/register.html" title="管理员注册"></iframe>
+            <div class="preview-overlay"></div>
+          </div>
+          <div class="page-info">
+            <h3 class="page-name">管理员注册</h3>
+            <p class="page-description">
+              新管理员账号注册入口，完善信息后可登录管理系统
+            </p>
+            <div class="page-actions">
+              <a href="pages/register.html" target="_blank" class="view-btn">查看页面</a>
+              <span class="page-status status-completed">已完成</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="future-pages">
+        <h2 class="future-title">计划开发的其他页面</h2>
+        <div class="pages-grid">
+          <!-- 系统设置 -->
+          <div class="page-card">
+            <div class="page-preview">
+              <div class="flex items-center justify-center h-full bg-gray-100">
+                <i class="fas fa-cogs text-5xl text-gray-400"></i>
+              </div>
+              <div class="preview-overlay"></div>
+            </div>
+            <div class="page-info">
+              <h3 class="page-name">系统设置</h3>
+              <p class="page-description">
+                系统参数配置，通知模板设置，管理员账号管理等
+              </p>
+              <div class="page-actions">
+                <a
+                  href="#"
+                  class="view-btn"
+                  style="opacity: 0.6; pointer-events: none"
+                >
+                  查看页面
+                </a>
+                <span class="page-status status-pending">待开发</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 数据统计 -->
+          <div class="page-card">
+            <div class="page-preview">
+              <div class="flex items-center justify-center h-full bg-gray-100">
+                <i class="fas fa-chart-line text-5xl text-gray-400"></i>
+              </div>
+              <div class="preview-overlay"></div>
+            </div>
+            <div class="page-info">
+              <h3 class="page-name">数据统计</h3>
+              <p class="page-description">
+                数据可视化分析，包括预约趋势、收入分析和使用频率等
+              </p>
+              <div class="page-actions">
+                <a
+                  href="#"
+                  class="view-btn"
+                  style="opacity: 0.6; pointer-events: none"
+                >
+                  查看页面
+                </a>
+                <span class="page-status status-pending">待开发</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 财务管理 -->
+          <div class="page-card">
+            <div class="page-preview">
+              <div class="flex items-center justify-center h-full bg-gray-100">
+                <i class="fas fa-coins text-5xl text-gray-400"></i>
+              </div>
+              <div class="preview-overlay"></div>
+            </div>
+            <div class="page-info">
+              <h3 class="page-name">财务管理</h3>
+              <p class="page-description">
+                收入统计，退款管理，发票申请处理，对账报表等
+              </p>
+              <div class="page-actions">
+                <a
+                  href="#"
+                  class="view-btn"
+                  style="opacity: 0.6; pointer-events: none"
+                >
+                  查看页面
+                </a>
+                <span class="page-status status-pending">待开发</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>场馆预约系统 - 管理端原型 © 2023 版权所有</p>
+        <p>本原型仅用于演示，不包含实际业务逻辑和后端功能</p>
+      </div>
+    </div>
+
+    <script>
+      // 调整iframe中页面的缩放和比例
+      document.addEventListener("DOMContentLoaded", function () {
+        const iframes = document.querySelectorAll(".page-preview iframe");
+        iframes.forEach((iframe) => {
+          iframe.addEventListener("load", function () {
+            // 适应iframe容器高度，展示页面更多内容区域
+            this.style.height =
+              this.contentWindow.document.body.scrollHeight * 1.5 + "px";
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

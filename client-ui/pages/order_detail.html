@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>订单详情 - 场馆预约系统</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      .detail-section {
+        background-color: white;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        padding: 15px;
+      }
+      .section-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+      .section-title i {
+        color: var(--primary-color);
+        margin-right: 8px;
+      }
+      .venue-info {
+        display: flex;
+        margin-bottom: 15px;
+      }
+      .venue-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        object-fit: cover;
+        margin-right: 12px;
+      }
+      .venue-details {
+        flex: 1;
+      }
+      .venue-name {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .venue-address {
+        color: var(--gray-1);
+        font-size: 14px;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+      }
+      .venue-address i {
+        margin-right: 5px;
+        font-size: 12px;
+      }
+      .order-info-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--gray-5);
+        font-size: 14px;
+      }
+      .order-info-item:last-child {
+        border-bottom: none;
+      }
+      .order-info-label {
+        color: var(--gray-1);
+      }
+      .order-info-value {
+        font-weight: 500;
+        text-align: right;
+      }
+      .status-label {
+        padding: 3px 8px;
+        border-radius: 100px;
+        font-size: 12px;
+        display: inline-block;
+      }
+      .status-pending {
+        background-color: rgba(0, 122, 255, 0.1);
+        color: var(--primary-color);
+      }
+      .status-completed {
+        background-color: rgba(76, 217, 100, 0.1);
+        color: var(--success-color);
+      }
+      .status-canceled {
+        background-color: rgba(142, 142, 147, 0.1);
+        color: var(--gray-1);
+      }
+      .price-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        font-size: 14px;
+      }
+      .price-total {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 10px;
+        border-top: 1px solid var(--gray-5);
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .price-total .amount {
+        color: var(--danger-color);
+      }
+      .qr-container {
+        text-align: center;
+        margin: 20px 0;
+      }
+      .qr-code {
+        width: 200px;
+        height: 200px;
+        margin: 0 auto 10px;
+        padding: 10px;
+        border: 1px solid var(--gray-4);
+        border-radius: 10px;
+      }
+      .qr-note {
+        color: var(--gray-1);
+        font-size: 14px;
+      }
+      .action-buttons {
+        display: flex;
+        margin-top: 20px;
+      }
+      .action-button {
+        flex: 1;
+        text-align: center;
+        padding: 12px 0;
+        border-radius: 8px;
+        font-weight: 500;
+      }
+      .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+        margin-right: 10px;
+      }
+      .btn-outline {
+        border: 1px solid var(--gray-4);
+        color: var(--gray-1);
+      }
+      .status-timeline {
+        margin: 20px 0;
+        position: relative;
+      }
+      .status-timeline::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 6px;
+        width: 2px;
+        background-color: var(--gray-4);
+      }
+      .timeline-item {
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 15px;
+      }
+      .timeline-item:last-child {
+        margin-bottom: 0;
+      }
+      .timeline-dot {
+        position: absolute;
+        left: 0;
+        top: 5px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: white;
+        border: 2px solid var(--primary-color);
+        z-index: 1;
+      }
+      .timeline-item.active .timeline-dot {
+        background-color: var(--primary-color);
+      }
+      .timeline-content {
+        font-size: 14px;
+      }
+      .timeline-title {
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+      .timeline-time {
+        color: var(--gray-1);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- iOS状态栏 -->
+    <div class="ios-status-bar">
+      <div class="time">9:41</div>
+      <div class="status-icons">
+        <i class="fas fa-signal"></i>
+        <i class="fas fa-wifi"></i>
+        <i class="fas fa-battery-full"></i>
+      </div>
+    </div>
+
+    <!-- iOS导航栏 -->
+    <div class="ios-nav-bar">
+      <div class="left-button" data-action="back" data-target="orders.html">
+        <i class="fas fa-chevron-left"></i> 返回
+      </div>
+      <div class="title">订单详情</div>
+      <div class="right-button">
+        <i class="fas fa-ellipsis-h"></i>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- 订单状态 -->
+      <div class="detail-section">
+        <div class="section-title">
+          <i class="fas fa-clipboard-check"></i>
+          <span>订单状态</span>
+        </div>
+
+        <div class="order-info-item">
+          <div class="order-info-label">订单状态</div>
+          <div class="order-info-value">
+            <span class="status-label status-pending">待使用</span>
+          </div>
+        </div>
+
+        <div class="order-info-item">
+          <div class="order-info-label">订单号</div>
+          <div class="order-info-value">202306150001</div>
+        </div>
+
+        <div class="order-info-item">
+          <div class="order-info-label">下单时间</div>
+          <div class="order-info-value">2023-06-14 18:30:45</div>
+        </div>
+
+        <div class="order-info-item">
+          <div class="order-info-label">支付方式</div>
+          <div class="order-info-value">支付宝</div>
+        </div>
+      </div>
+
+      <!-- 场馆信息 -->
+      <div class="detail-section">
+        <div class="section-title">
+          <i class="fas fa-building"></i>
+          <span>场馆信息</span>
+        </div>
+
+        <div class="venue-info">
+          <img
+            src="https://images.unsplash.com/photo-1580261450046-d0a30080dc9b?w=500&auto=format&fit=crop&q=60"
+            alt="星动篮球馆"
+            class="venue-image"
+          />
+          <div class="venue-details">
+            <div class="venue-name">星动篮球馆</div>
+            <div class="venue-address">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>海淀区新源南路8号</span>
+            </div>
+            <div class="venue-address">
+              <i class="fas fa-phone"></i>
+              <span>010-12345678</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-info-item">
+          <div class="order-info-label">预约日期</div>
+          <div class="order-info-value">2023年6月15日(今天)</div>
+        </div>
+
+        <div class="order-info-item">
+          <div class="order-info-label">预约时段</div>
+          <div class="order-info-value">10:00 - 11:00</div>
+        </div>
+
+        <div class="order-info-item">
+          <div class="order-info-label">场地</div>
+          <div class="order-info-value">A1场地</div>
+        </div>
+      </div>
+
+      <!-- 入场二维码 -->
+      <div class="detail-section">
+        <div class="section-title">
+          <i class="fas fa-qrcode"></i>
+          <span>入场凭证</span>
+        </div>
+
+        <div class="qr-container">
+          <img
+            src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=202306150001"
+            class="qr-code"
+          />
+          <div class="qr-note">请向场馆工作人员出示此二维码</div>
+          <div class="qr-note">使用时间：2023年6月15日 10:00-11:00</div>
+        </div>
+      </div>
+
+      <!-- 费用明细 -->
+      <div class="detail-section">
+        <div class="section-title">
+          <i class="fas fa-yen-sign"></i>
+          <span>费用明细</span>
+        </div>
+
+        <div class="price-item">
+          <div class="price-label">场地使用费</div>
+          <div class="price-value">¥80</div>
+        </div>
+
+        <div class="price-item">
+          <div class="price-label">服务费</div>
+          <div class="price-value">¥5</div>
+        </div>
+
+        <div class="price-total">
+          <div class="price-label">实付款</div>
+          <div class="amount">¥85</div>
+        </div>
+      </div>
+
+      <!-- 订单跟踪 -->
+      <div class="detail-section">
+        <div class="section-title">
+          <i class="fas fa-history"></i>
+          <span>订单跟踪</span>
+        </div>
+
+        <div class="status-timeline">
+          <div class="timeline-item active">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-title">预约成功</div>
+              <div class="timeline-time">2023-06-14 18:30:45</div>
+            </div>
+          </div>
+
+          <div class="timeline-item active">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-title">支付成功</div>
+              <div class="timeline-time">2023-06-14 18:32:10</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-title">待入场使用</div>
+              <div class="timeline-time">2023-06-15 10:00:00</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-title">预约完成</div>
+              <div class="timeline-time">待完成</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 操作按钮 -->
+      <div class="action-buttons">
+        <button
+          class="action-button btn-primary"
+          onclick="window.location.href='venue_detail.html'"
+        >
+          查看场馆
+        </button>
+        <button class="action-button btn-outline" id="cancelBooking">
+          取消预约
+        </button>
+      </div>
+    </div>
+
+    <!-- iOS底部标签栏 -->
+    <div class="ios-tab-bar">
+      <a class="tab-item" data-target="home.html">
+        <i class="fas fa-home"></i>
+        <span>首页</span>
+      </a>
+      <a class="tab-item active" data-target="orders.html">
+        <i class="fas fa-calendar-alt"></i>
+        <span>订单</span>
+      </a>
+      <a class="tab-item" data-target="profile.html">
+        <i class="fas fa-user"></i>
+        <span>我的</span>
+      </a>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 取消预约
+        const cancelButton = document.getElementById("cancelBooking");
+        cancelButton.addEventListener("click", function () {
+          if (confirm("确定要取消此预约吗？取消可能会产生费用。")) {
+            alert("预约已取消");
+            // 实际应用中这里应该发送请求到服务器，然后跳转回订单列表页
+            window.location.href = "orders.html";
+          }
+        });
+
+        // 更多按钮点击事件
+        const moreButton = document.querySelector(".right-button");
+        moreButton.addEventListener("click", function () {
+          const options = ["联系客服", "分享订单", "复制订单号", "申请发票"];
+
+          let html = '<div class="ios-alert">';
+          html += '<div class="ios-alert-title">更多操作</div>';
+          html +=
+            '<div class="ios-alert-actions" style="flex-direction: column; border-top: none;">';
+
+          options.forEach((option) => {
+            html += `<button class="ios-alert-button" style="border-top: 1px solid var(--gray-5);">${option}</button>`;
+          });
+
+          html +=
+            '<button class="ios-alert-button cancel" style="border-top: 1px solid var(--gray-5); margin-top: 5px;">取消</button>';
+          html += "</div></div>";
+
+          const alertElement = document.createElement("div");
+          alertElement.className = "ios-alert-overlay";
+          alertElement.innerHTML = html;
+
+          document.body.appendChild(alertElement);
+
+          const buttons = alertElement.querySelectorAll(".ios-alert-button");
+          buttons.forEach((button, index) => {
+            button.addEventListener("click", function () {
+              document.body.removeChild(alertElement);
+              if (options[index] === "复制订单号") {
+                // 复制订单号
+                navigator.clipboard.writeText("202306150001").then(() => {
+                  alert("订单号已复制到剪贴板");
+                });
+              }
+            });
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

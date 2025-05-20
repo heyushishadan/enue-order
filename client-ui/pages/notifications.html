@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>消息通知 - 场馆预约系统</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      .notification-tabs {
+        display: flex;
+        background-color: white;
+        border-bottom: 1px solid var(--gray-5);
+        position: sticky;
+        top: 88px;
+        z-index: 10;
+      }
+      .notification-tab {
+        flex: 1;
+        text-align: center;
+        padding: 12px 0;
+        font-size: 14px;
+        color: var(--gray-1);
+        position: relative;
+      }
+      .notification-tab.active {
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+      .notification-tab.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 3px;
+        background-color: var(--primary-color);
+        border-radius: 3px;
+      }
+      .notification-item {
+        background-color: white;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        position: relative;
+      }
+      .notification-item.unread::before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        left: 0;
+        width: 5px;
+        height: 5px;
+        background-color: var(--danger-color);
+        border-radius: 50%;
+      }
+      .notification-header {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid var(--gray-5);
+      }
+      .notification-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        font-size: 18px;
+      }
+      .notification-icon.system {
+        background-color: rgba(0, 122, 255, 0.1);
+        color: var(--primary-color);
+      }
+      .notification-icon.activity {
+        background-color: rgba(255, 149, 0, 0.1);
+        color: var(--warning-color);
+      }
+      .notification-icon.booking {
+        background-color: rgba(76, 217, 100, 0.1);
+        color: var(--success-color);
+      }
+      .notification-icon.promotional {
+        background-color: rgba(255, 59, 48, 0.1);
+        color: var(--danger-color);
+      }
+      .notification-info {
+        flex: 1;
+      }
+      .notification-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+      .notification-time {
+        color: var(--gray-1);
+        font-size: 12px;
+      }
+      .notification-content {
+        padding: 15px;
+        color: var(--gray-1);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .notification-action {
+        padding: 0 15px 15px;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .notification-button {
+        background-color: rgba(0, 122, 255, 0.1);
+        color: var(--primary-color);
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .tab-content {
+        padding-top: 15px;
+        min-height: calc(100vh - 88px - 45px - 83px);
+      }
+      .no-notification {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 0;
+        color: var(--gray-1);
+      }
+      .no-notification i {
+        font-size: 60px;
+        color: var(--gray-3);
+        margin-bottom: 20px;
+      }
+      .clear-all {
+        margin-bottom: 15px;
+        text-align: right;
+        padding-right: 5px;
+      }
+      .clear-all-btn {
+        color: var(--primary-color);
+        font-size: 14px;
+        padding: 5px 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- iOS状态栏 -->
+    <div class="ios-status-bar">
+      <div class="time">9:41</div>
+      <div class="status-icons">
+        <i class="fas fa-signal"></i>
+        <i class="fas fa-wifi"></i>
+        <i class="fas fa-battery-full"></i>
+      </div>
+    </div>
+
+    <!-- iOS导航栏 -->
+    <div class="ios-nav-bar">
+      <div class="left-button" data-action="back" data-target="profile.html">
+        <i class="fas fa-chevron-left"></i> 返回
+      </div>
+      <div class="title">消息通知</div>
+      <div class="right-button"></div>
+    </div>
+
+    <!-- 通知标签页 -->
+    <div class="notification-tabs">
+      <div class="notification-tab active" data-target="all-notifications">
+        全部
+      </div>
+      <div class="notification-tab" data-target="system-notifications">
+        系统通知
+      </div>
+      <div class="notification-tab" data-target="activity-notifications">
+        活动消息
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- 全部通知 -->
+      <div class="tab-content" id="all-notifications">
+        <div class="clear-all">
+          <button class="clear-all-btn" id="clearAllBtn">
+            <i class="fas fa-trash-alt"></i> 清空消息
+          </button>
+        </div>
+
+        <!-- 预约提醒 -->
+        <div class="notification-item unread">
+          <div class="notification-header">
+            <div class="notification-icon booking">
+              <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="notification-info">
+              <div class="notification-title">预约提醒</div>
+              <div class="notification-time">10分钟前</div>
+            </div>
+          </div>
+          <div class="notification-content">
+            您明天10:00在星动篮球馆的预约即将开始，请按时到场。
+          </div>
+          <div class="notification-action">
+            <a href="order_detail.html" class="notification-button">查看详情</a>
+          </div>
+        </div>
+
+        <!-- 活动通知 -->
+        <div class="notification-item unread">
+          <div class="notification-header">
+            <div class="notification-icon activity">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <div class="notification-info">
+              <div class="notification-title">活动邀请</div>
+              <div class="notification-time">2小时前</div>
+            </div>
+          </div>
+          <div class="notification-content">
+            【社区篮球赛】本周末将在星动篮球馆举办社区篮球友谊赛，诚邀您参加！
+          </div>
+          <div class="notification-action">
+            <a href="activities.html" class="notification-button">查看活动</a>
+          </div>
+        </div>
+
+        <!-- 系统通知 -->
+        <div class="notification-item unread">
+          <div class="notification-header">
+            <div class="notification-icon system">
+              <i class="fas fa-bell"></i>
+            </div>
+            <div class="notification-info">
+              <div class="notification-title">系统通知</div>
+              <div class="notification-time">昨天 14:30</div>
+            </div>
+          </div>
+          <div class="notification-content">
+            您的账号已完成实名认证，现在可以享受更多预约特权。
+          </div>
+          <div class="notification-action">
+            <button class="notification-button">我知道了</button>
+          </div>
+        </div>
+
+        <!-- 促销通知 -->
+        <div class="notification-item">
+          <div class="notification-header">
+            <div class="notification-icon promotional">
+              <i class="fas fa-tag"></i>
+            </div>
+            <div class="notification-info">
+              <div class="notification-title">优惠活动</div>
+              <div class="notification-time">2023-06-10</div>
+            </div>
+          </div>
+          <div class="notification-content">
+            六月健身月，健身房预约享8折优惠，多人同行还有额外优惠！
+          </div>
+          <div class="notification-action">
+            <a href="home.html" class="notification-button">前往预约</a>
+          </div>
+        </div>
+
+        <!-- 系统通知 -->
+        <div class="notification-item">
+          <div class="notification-header">
+            <div class="notification-icon system">
+              <i class="fas fa-bell"></i>
+            </div>
+            <div class="notification-info">
+              <div class="notification-title">系统更新通知</div>
+              <div class="notification-time">2023-06-05</div>
+            </div>
+          </div>
+          <div class="notification-content">
+            尊敬的用户，我们的系统已更新至最新版本，新增场馆评价功能，欢迎体验！
+          </div>
+          <div class="notification-action">
+            <button class="notification-button">我知道了</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 系统通知 -->
+      <div class="tab-content" id="system-notifications" style="display: none">
+        <div class="clear-all">
+          <button class="clear-all-btn">
+            <i class="fas fa-trash-alt"></i> 清空消息
+          </button>
+        </div>
+
+        <!-- 系统通知 -->
+        <div class="notification-item unread">
+          <div class="notification-header">
+            <div class="notification-icon system">
+              <i class="fas fa-bell"></i>
+            </div>
+            <div class="notification-info">
+              <div class="notification-title">系统通知</div>
+              <div class="notification-time">昨天 14:30</div>
+            </div>
+          </div>
+          <div class="notification-content">
+            您的账号已完成实名认证，现在可以享受更多预约特权。
+          </div>
+          <div class="notification-action">
+            <button class="notification-button">我知道了</button>
+          </div>
+        </div>
+
+        <!-- 系统通知 -->
+        <div class="notification-item">
+          <div class="notification-header">
+            <div class="notification-icon system">
+              <i class="fas fa-bell"></i>
+            </div>
+            <div class="notification-info">
+              <div class="notification-title">系统更新通知</div>
+              <div class="notification-time">2023-06-05</div>
+            </div>
+          </div>
+          <div class="notification-content">
+            尊敬的用户，我们的系统已更新至最新版本，新增场馆评价功能，欢迎体验！
+          </div>
+          <div class="notification-action">
+            <button class="notification-button">我知道了</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 活动消息 -->
+      <div
+        class="tab-content"
+        id="activity-notifications"
+        style="display: none"
+      >
+        <div class="clear-all">
+          <button class="clear-all-btn">
+            <i class="fas fa-trash-alt"></i> 清空消息
+          </button>
+        </div>
+
+        <!-- 预约提醒 -->
+        <div class="notification-item unread">
+          <div class="notification-header">
+            <div class="notification-icon booking">
+              <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="notification-info">
+              <div class="notification-title">预约提醒</div>
+              <div class="notification-time">10分钟前</div>
+            </div>
+          </div>
+          <div class="notification-content">
+            您明天10:00在星动篮球馆的预约即将开始，请按时到场。
+          </div>
+          <div class="notification-action">
+            <a href="order_detail.html" class="notification-button">查看详情</a>
+          </div>
+        </div>
+
+        <!-- 活动通知 -->
+        <div class="notification-item unread">
+          <div class="notification-header">
+            <div class="notification-icon activity">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <div class="notification-info">
+              <div class="notification-title">活动邀请</div>
+              <div class="notification-time">2小时前</div>
+            </div>
+          </div>
+          <div class="notification-content">
+            【社区篮球赛】本周末将在星动篮球馆举办社区篮球友谊赛，诚邀您参加！
+          </div>
+          <div class="notification-action">
+            <a href="activities.html" class="notification-button">查看活动</a>
+          </div>
+        </div>
+
+        <!-- 促销通知 -->
+        <div class="notification-item">
+          <div class="notification-header">
+            <div class="notification-icon promotional">
+              <i class="fas fa-tag"></i>
+            </div>
+            <div class="notification-info">
+              <div class="notification-title">优惠活动</div>
+              <div class="notification-time">2023-06-10</div>
+            </div>
+          </div>
+          <div class="notification-content">
+            六月健身月，健身房预约享8折优惠，多人同行还有额外优惠！
+          </div>
+          <div class="notification-action">
+            <a href="home.html" class="notification-button">前往预约</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- iOS底部标签栏 -->
+    <div class="ios-tab-bar">
+      <a class="tab-item" data-target="home.html">
+        <i class="fas fa-home"></i>
+        <span>首页</span>
+      </a>
+      <a class="tab-item" data-target="orders.html">
+        <i class="fas fa-calendar-alt"></i>
+        <span>订单</span>
+      </a>
+      <a class="tab-item active" data-target="profile.html">
+        <i class="fas fa-user"></i>
+        <span>我的</span>
+      </a>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 标签页切换
+        const tabs = document.querySelectorAll(".notification-tab");
+        const tabContents = document.querySelectorAll(".tab-content");
+
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", function () {
+            // 移除所有活动状态
+            tabs.forEach((t) => t.classList.remove("active"));
+            tabContents.forEach((content) => (content.style.display = "none"));
+
+            // 设置当前标签为活动状态
+            this.classList.add("active");
+            const targetId = this.getAttribute("data-target");
+            document.getElementById(targetId).style.display = "block";
+          });
+        });
+
+        // 清空全部消息
+        const clearButtons = document.querySelectorAll(".clear-all-btn");
+        clearButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            if (confirm("确定要清空所有消息吗？")) {
+              const parentTabContent = this.closest(".tab-content");
+              const notifications =
+                parentTabContent.querySelectorAll(".notification-item");
+
+              if (notifications.length > 0) {
+                notifications.forEach((notification) => {
+                  notification.remove();
+                });
+
+                // 显示空状态
+                const emptyState = document.createElement("div");
+                emptyState.className = "no-notification";
+                emptyState.innerHTML = `
+                                <i class="fas fa-bell-slash"></i>
+                                <p>暂无消息通知</p>
+                            `;
+                parentTabContent.appendChild(emptyState);
+              }
+            }
+          });
+        });
+
+        // 消息已读功能
+        const notificationItems =
+          document.querySelectorAll(".notification-item");
+        notificationItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            this.classList.remove("unread");
+          });
+        });
+
+        // 知道了按钮点击事件
+        const knownButtons = document.querySelectorAll(".notification-button");
+        knownButtons.forEach((button) => {
+          if (button.textContent.trim() === "我知道了") {
+            button.addEventListener("click", function (e) {
+              e.stopPropagation();
+              const notificationItem = this.closest(".notification-item");
+              notificationItem.style.display = "none";
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

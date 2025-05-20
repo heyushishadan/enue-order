@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>场馆预约 - 场馆预约系统</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      .venue-header {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background-color: white;
+        border-radius: 10px;
+        margin-bottom: 15px;
+      }
+      .venue-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        object-fit: cover;
+        margin-right: 15px;
+      }
+      .venue-info {
+        flex: 1;
+      }
+      .venue-name {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .venue-address {
+        color: var(--gray-1);
+        font-size: 14px;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+      }
+      .venue-address i {
+        font-size: 12px;
+        margin-right: 5px;
+      }
+      .venue-rating {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+      }
+      .venue-rating i {
+        color: var(--warning-color);
+        margin-right: 5px;
+      }
+      .date-picker-section {
+        background-color: white;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+      .section-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+      }
+      .section-title i {
+        margin-right: 8px;
+        color: var(--primary-color);
+      }
+      .date-scroller {
+        display: flex;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding-bottom: 10px;
+      }
+      .date-scroller::-webkit-scrollbar {
+        display: none;
+      }
+      .date-item {
+        min-width: 60px;
+        height: 75px;
+        margin-right: 10px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--gray-4);
+        transition: all 0.3s;
+      }
+      .date-item.active {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+      }
+      .date-day {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 2px;
+      }
+      .date-weekday {
+        font-size: 12px;
+      }
+      .time-picker-section {
+        background-color: white;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+      .time-slots {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .time-slot {
+        background-color: var(--gray-6);
+        border-radius: 8px;
+        padding: 12px;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+      }
+      .time-slot.selected {
+        background-color: rgba(0, 122, 255, 0.1);
+        border: 1px solid var(--primary-color);
+      }
+      .time-slot.unavailable {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .time-slot.unavailable::after {
+        content: "已约满";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(255, 59, 48, 0.8);
+        color: white;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+      .time {
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .price {
+        color: var(--danger-color);
+        font-size: 14px;
+      }
+      .availability {
+        font-size: 12px;
+        color: var(--gray-1);
+      }
+      .court-selection-section {
+        background-color: white;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+      .court-options {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+      .court-option {
+        border: 1px solid var(--gray-4);
+        border-radius: 8px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      .court-option.selected {
+        background-color: rgba(0, 122, 255, 0.1);
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+      .booking-summary-section {
+        background-color: white;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+      .booking-summary {
+        color: var(--gray-1);
+        line-height: 1.6;
+      }
+      .submit-section {
+        position: fixed;
+        bottom: 83px;
+        left: 0;
+        right: 0;
+        background-color: white;
+        padding: 15px;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .total-price {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--danger-color);
+      }
+      .submit-btn {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 12px 30px;
+        border-radius: 10px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- iOS状态栏 -->
+    <div class="ios-status-bar">
+      <div class="time">9:41</div>
+      <div class="status-icons">
+        <i class="fas fa-signal"></i>
+        <i class="fas fa-wifi"></i>
+        <i class="fas fa-battery-full"></i>
+      </div>
+    </div>
+
+    <!-- iOS导航栏 -->
+    <div class="ios-nav-bar">
+      <div
+        class="left-button"
+        data-action="back"
+        data-target="venue_detail.html"
+      >
+        <i class="fas fa-chevron-left"></i> 返回
+      </div>
+      <div class="title">场馆预约</div>
+      <div class="right-button"></div>
+    </div>
+
+    <div class="content" style="padding-bottom: 130px">
+      <!-- 场馆信息 -->
+      <div class="venue-header">
+        <img
+          src="https://images.unsplash.com/photo-1580261450046-d0a30080dc9b?w=500&auto=format&fit=crop&q=60"
+          alt="星动篮球馆"
+          class="venue-image"
+        />
+        <div class="venue-info">
+          <h1 class="venue-name">星动篮球馆</h1>
+          <p class="venue-address">
+            <i class="fas fa-map-marker-alt"></i>
+            海淀区新源南路8号
+          </p>
+          <div class="venue-rating">
+            <i class="fas fa-star"></i>
+            <span>4.8 (124条评价)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 日期选择 -->
+      <div class="date-picker-section">
+        <div class="section-title">
+          <i class="far fa-calendar-alt"></i>
+          <span>选择日期</span>
+        </div>
+        <div class="date-scroller">
+          <div class="date-item active">
+            <div class="date-day">15</div>
+            <div class="date-weekday">今天</div>
+          </div>
+          <div class="date-item">
+            <div class="date-day">16</div>
+            <div class="date-weekday">明天</div>
+          </div>
+          <div class="date-item">
+            <div class="date-day">17</div>
+            <div class="date-weekday">周三</div>
+          </div>
+          <div class="date-item">
+            <div class="date-day">18</div>
+            <div class="date-weekday">周四</div>
+          </div>
+          <div class="date-item">
+            <div class="date-day">19</div>
+            <div class="date-weekday">周五</div>
+          </div>
+          <div class="date-item">
+            <div class="date-day">20</div>
+            <div class="date-weekday">周六</div>
+          </div>
+          <div class="date-item">
+            <div class="date-day">21</div>
+            <div class="date-weekday">周日</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 时段选择 -->
+      <div class="time-picker-section">
+        <div class="section-title">
+          <i class="far fa-clock"></i>
+          <span>选择时段</span>
+        </div>
+        <div class="time-slots">
+          <div class="time-slot">
+            <div class="time">8:00 - 9:00</div>
+            <div class="price">¥80</div>
+            <div class="availability">剩余 3 个场地</div>
+          </div>
+          <div class="time-slot unavailable">
+            <div class="time">9:00 - 10:00</div>
+            <div class="price">¥80</div>
+            <div class="availability">剩余 0 个场地</div>
+          </div>
+          <div class="time-slot selected">
+            <div class="time">10:00 - 11:00</div>
+            <div class="price">¥80</div>
+            <div class="availability">剩余 5 个场地</div>
+          </div>
+          <div class="time-slot">
+            <div class="time">11:00 - 12:00</div>
+            <div class="price">¥80</div>
+            <div class="availability">剩余 4 个场地</div>
+          </div>
+          <div class="time-slot">
+            <div class="time">13:00 - 14:00</div>
+            <div class="price">¥100</div>
+            <div class="availability">剩余 6 个场地</div>
+          </div>
+          <div class="time-slot">
+            <div class="time">14:00 - 15:00</div>
+            <div class="price">¥100</div>
+            <div class="availability">剩余 6 个场地</div>
+          </div>
+          <div class="time-slot">
+            <div class="time">15:00 - 16:00</div>
+            <div class="price">¥100</div>
+            <div class="availability">剩余 4 个场地</div>
+          </div>
+          <div class="time-slot">
+            <div class="time">16:00 - 17:00</div>
+            <div class="price">¥100</div>
+            <div class="availability">剩余 2 个场地</div>
+          </div>
+          <div class="time-slot">
+            <div class="time">17:00 - 18:00</div>
+            <div class="price">¥100</div>
+            <div class="availability">剩余 3 个场地</div>
+          </div>
+          <div class="time-slot">
+            <div class="time">18:00 - 19:00</div>
+            <div class="price">¥120</div>
+            <div class="availability">剩余 5 个场地</div>
+          </div>
+          <div class="time-slot">
+            <div class="time">19:00 - 20:00</div>
+            <div class="price">¥120</div>
+            <div class="availability">剩余 2 个场地</div>
+          </div>
+          <div class="time-slot">
+            <div class="time">20:00 - 21:00</div>
+            <div class="price">¥120</div>
+            <div class="availability">剩余 4 个场地</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 场地选择 -->
+      <div class="court-selection-section">
+        <div class="section-title">
+          <i class="fas fa-map"></i>
+          <span>选择场地</span>
+        </div>
+        <div class="court-options">
+          <div class="court-option selected" data-court-id="A1">A1</div>
+          <div class="court-option" data-court-id="A2">A2</div>
+          <div class="court-option" data-court-id="A3">A3</div>
+          <div class="court-option" data-court-id="B1">B1</div>
+          <div class="court-option" data-court-id="B2">B2</div>
+          <div class="court-option" data-court-id="B3">B3</div>
+        </div>
+      </div>
+
+      <!-- 预约摘要 -->
+      <div class="booking-summary-section">
+        <div class="section-title">
+          <i class="fas fa-receipt"></i>
+          <span>预约摘要</span>
+        </div>
+        <div class="booking-summary">
+          <div class="ios-mb-2"><strong>场馆:</strong> 星动篮球馆</div>
+          <div class="ios-mb-2"><strong>日期:</strong> 2023年6月15日(今天)</div>
+          <div class="ios-mb-2"><strong>时段:</strong> 10:00 - 11:00</div>
+          <div class="ios-mb-2"><strong>场地:</strong> A1</div>
+          <div class="ios-mt-3"><strong>费用明细:</strong></div>
+          <div>场地使用费: ¥80</div>
+          <div>服务费: ¥5</div>
+        </div>
+      </div>
+
+      <!-- 使用须知 -->
+      <div class="info-section">
+        <div class="section-title">
+          <i class="fas fa-exclamation-circle"></i>
+          <span>使用须知</span>
+        </div>
+        <div class="venue-description">
+          <p>1. 请在预约时间前15分钟到达。</p>
+          <p>2. 至少提前4小时取消，否则将产生取消费用。</p>
+          <p>3. 使用场地时，请遵守场馆规定。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 提交栏 -->
+    <div class="submit-section">
+      <div class="total-price">¥85</div>
+      <a href="payment.html" class="submit-btn">确认预约</a>
+    </div>
+
+    <!-- iOS底部标签栏 -->
+    <div class="ios-tab-bar">
+      <a class="tab-item" data-target="home.html">
+        <i class="fas fa-home"></i>
+        <span>首页</span>
+      </a>
+      <a class="tab-item" data-target="orders.html">
+        <i class="fas fa-calendar-alt"></i>
+        <span>订单</span>
+      </a>
+      <a class="tab-item" data-target="profile.html">
+        <i class="fas fa-user"></i>
+        <span>我的</span>
+      </a>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 日期选择
+        const dateItems = document.querySelectorAll(".date-item");
+        dateItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            dateItems.forEach((di) => di.classList.remove("active"));
+            this.classList.add("active");
+            updateSummary();
+          });
+        });
+
+        // 时段选择
+        const timeSlots = document.querySelectorAll(
+          ".time-slot:not(.unavailable)"
+        );
+        timeSlots.forEach((slot) => {
+          slot.addEventListener("click", function () {
+            timeSlots.forEach((ts) => ts.classList.remove("selected"));
+            this.classList.add("selected");
+            updateSummary();
+          });
+        });
+
+        // 场地选择
+        const courtOptions = document.querySelectorAll(".court-option");
+        courtOptions.forEach((option) => {
+          option.addEventListener("click", function () {
+            courtOptions.forEach((co) => co.classList.remove("selected"));
+            this.classList.add("selected");
+            updateSummary();
+          });
+        });
+
+        // 更新预约摘要
+        function updateSummary() {
+          const selectedDate = document.querySelector(".date-item.active");
+          const dateDay = selectedDate.querySelector(".date-day").textContent;
+          const dateWeekday =
+            selectedDate.querySelector(".date-weekday").textContent;
+
+          const selectedTime = document.querySelector(".time-slot.selected");
+          const time = selectedTime.querySelector(".time").textContent;
+          const price = selectedTime
+            .querySelector(".price")
+            .textContent.replace("¥", "");
+
+          const selectedCourt = document.querySelector(
+            ".court-option.selected"
+          );
+          const courtId = selectedCourt.textContent;
+
+          const serviceFee = 5;
+          const totalPrice = parseInt(price) + serviceFee;
+
+          // 更新预约摘要区域
+          document.querySelector(".booking-summary").innerHTML = `
+                    <div class="ios-mb-2"><strong>场馆:</strong> 星动篮球馆</div>
+                    <div class="ios-mb-2"><strong>日期:</strong> 2023年6月${dateDay}日(${dateWeekday})</div>
+                    <div class="ios-mb-2"><strong>时段:</strong> ${time}</div>
+                    <div class="ios-mb-2"><strong>场地:</strong> ${courtId}</div>
+                    <div class="ios-mt-3"><strong>费用明细:</strong></div>
+                    <div>场地使用费: ¥${price}</div>
+                    <div>服务费: ¥${serviceFee}</div>
+                `;
+
+          // 更新总价
+          document.querySelector(".total-price").textContent = `¥${totalPrice}`;
+        }
+      });
+    </script>
+  </body>
+</html>

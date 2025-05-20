@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>用户管理 - 场馆预约系统</title>
+    <!-- 引入字体和图标 -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css"
+    />
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/main.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <!-- 侧边栏 -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-primary"
+            >
+              <path
+                d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"
+              ></path>
+              <line x1="4" y1="22" x2="4" y2="15"></line>
+            </svg>
+            <span>场馆预约系统</span>
+          </div>
+          <button class="sidebar-toggle">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+        </div>
+        <div class="sidebar-menu">
+          <a href="dashboard.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-tachometer-alt"></i>
+            </div>
+            <div class="menu-text">控制台</div>
+          </a>
+
+          <div class="menu-category">场馆管理</div>
+
+          <a href="venues.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="menu-text">场馆列表</div>
+          </a>
+
+          <a href="categories.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-tags"></i>
+            </div>
+            <div class="menu-text">场馆分类</div>
+          </a>
+
+          <div class="menu-category">预约管理</div>
+
+          <a href="orders.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-clipboard-list"></i>
+            </div>
+            <div class="menu-text">订单管理</div>
+          </a>
+
+          <a href="bookings.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="menu-text">预约时段</div>
+          </a>
+
+          <div class="menu-category">用户管理</div>
+
+          <a href="users.html" class="menu-item active">
+            <div class="menu-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="menu-text">用户列表</div>
+          </a>
+
+          <a href="comments.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-comment-alt"></i>
+            </div>
+            <div class="menu-text">评价管理</div>
+          </a>
+
+          <a href="statistics.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+            <div class="menu-text">数据统计</div>
+          </a>
+
+          <div class="menu-category">系统设置</div>
+
+          <a href="notifications.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-bell"></i>
+            </div>
+            <div class="menu-text">通知管理</div>
+          </a>
+
+          <a href="settings.html" class="menu-item">
+            <div class="menu-icon">
+              <i class="fas fa-cog"></i>
+            </div>
+            <div class="menu-text">系统设置</div>
+          </a>
+        </div>
+      </aside>
+
+      <!-- 主内容区域 -->
+      <main class="main-content">
+        <!-- 顶部导航栏 -->
+        <header class="header">
+          <div class="header-title d-none d-md-block">用户管理</div>
+
+          <button class="btn d-md-none mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <div class="header-actions">
+            <div class="search-bar d-none d-md-block">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                class="search-input"
+                placeholder="搜索用户..."
+              />
+            </div>
+
+            <div class="notification-icon">
+              <i class="fas fa-bell"></i>
+              <div class="notification-badge">5</div>
+            </div>
+
+            <div class="settings-icon">
+              <i class="fas fa-cog"></i>
+            </div>
+
+            <div class="user-menu" data-toggle="dropdown">
+              <img
+                src="https://randomuser.me/api/portraits/men/1.jpg"
+                alt="用户头像"
+                class="user-avatar"
+              />
+              <div class="user-info">
+                <div class="user-name">管理员</div>
+                <div class="user-role">超级管理员</div>
+              </div>
+              <i class="fas fa-chevron-down dropdown-icon"></i>
+
+              <div class="dropdown-menu">
+                <a href="profile.html" class="dropdown-item">
+                  <i class="fas fa-user-circle mr-2"></i>
+                  <span>个人资料</span>
+                </a>
+                <a href="settings.html" class="dropdown-item">
+                  <i class="fas fa-cog mr-2"></i>
+                  <span>系统设置</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item" id="logoutBtn">
+                  <i class="fas fa-sign-out-alt mr-2"></i>
+                  <span>退出登录</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- 内容区域 -->
+        <div class="content">
+          <!-- 页面标题和操作 -->
+          <div
+            class="page-header d-flex justify-content-between align-items-center mb-4"
+          >
+            <h1 class="page-title">用户管理</h1>
+            <div class="page-actions">
+              <button class="btn btn-outline-primary mr-2" id="exportUsersBtn">
+                <i class="fas fa-file-export mr-1"></i>导出
+              </button>
+              <button
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#addUserModal"
+              >
+                <i class="fas fa-user-plus mr-1"></i>添加用户
+              </button>
+            </div>
+          </div>
+
+          <!-- 筛选区域 -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="filter-section">
+                <h5 class="card-title mb-3">筛选条件</h5>
+                <div class="row">
+                  <div class="col-12 col-md-4 mb-3">
+                    <div class="form-group">
+                      <label>用户状态</label>
+                      <select class="form-control" id="filterUserStatus">
+                        <option value="">全部状态</option>
+                        <option value="active">正常</option>
+                        <option value="inactive">已禁用</option>
+                        <option value="pending">待审核</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-4 mb-3">
+                    <div class="form-group">
+                      <label>用户类型</label>
+                      <select class="form-control" id="filterUserType">
+                        <option value="">全部类型</option>
+                        <option value="regular">普通用户</option>
+                        <option value="vip">VIP用户</option>
+                        <option value="admin">管理员</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-4 mb-3">
+                    <div class="form-group">
+                      <label>注册时间</label>
+                      <select class="form-control" id="filterRegistrationTime">
+                        <option value="">全部时间</option>
+                        <option value="today">今天</option>
+                        <option value="week">最近一周</option>
+                        <option value="month">最近一个月</option>
+                        <option value="year">最近一年</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-md-4 mb-3">
+                    <div class="form-group">
+                      <label>关键词搜索</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="filterKeyword"
+                        placeholder="用户名/手机号/邮箱"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="col-12 col-md-8 d-flex align-items-end justify-content-end mb-3"
+                  >
+                    <button
+                      class="btn btn-outline-secondary mr-2"
+                      id="resetFilterBtn"
+                    >
+                      <i class="fas fa-undo mr-1"></i>重置
+                    </button>
+                    <button class="btn btn-primary" id="applyFilterBtn">
+                      <i class="fas fa-filter mr-1"></i>应用筛选
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 用户列表 -->
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="selectAllUsers"
+                          />
+                          <label
+                            class="form-check-label"
+                            for="selectAllUsers"
+                          ></label>
+                        </div>
+                      </th>
+                      <th>ID</th>
+                      <th>用户信息</th>
+                      <th>类型</th>
+                      <th>状态</th>
+                      <th>注册时间</th>
+                      <th>最近登录</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- 用户数据行 -->
+                    <tr>
+                      <td>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input user-select"
+                            type="checkbox"
+                            id="user1"
+                          />
+                          <label class="form-check-label" for="user1"></label>
+                        </div>
+                      </td>
+                      <td>UID10001</td>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <img
+                            src="https://randomuser.me/api/portraits/men/1.jpg"
+                            alt="用户头像"
+                            class="user-avatar-sm mr-2"
+                          />
+                          <div>
+                            <div class="font-weight-bold">张三</div>
+                            <div class="text-muted small">13800138000</div>
+                            <div class="text-muted small">
+                              zhangsan@qq.com
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="badge badge-info">VIP用户</span></td>
+                      <td><span class="badge badge-success">正常</span></td>
+                      <td>2024-01-15 10:30</td>
+                      <td>2024-06-20 15:45</td>
+                      <td>
+                        <div class="dropdown">
+                          <button
+                            class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                            type="button"
+                            data-toggle="dropdown"
+                          >
+                            操作
+                          </button>
+                          <div class="dropdown-menu">
+                            <a
+                              class="dropdown-item view-user"
+                              href="#"
+                              data-id="UID10001"
+                            >
+                              <i class="fas fa-eye mr-2"></i>查看详情
+                            </a>
+                            <a
+                              class="dropdown-item edit-user"
+                              href="#"
+                              data-id="UID10001"
+                            >
+                              <i class="fas fa-edit mr-2"></i>编辑
+                            </a>
+                            <a
+                              class="dropdown-item disable-user"
+                              href="#"
+                              data-id="UID10001"
+                            >
+                              <i class="fas fa-ban mr-2"></i>禁用
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a
+                              class="dropdown-item text-danger delete-user"
+                              href="#"
+                              data-id="UID10001"
+                            >
+                              <i class="fas fa-trash-alt mr-2"></i>删除
+                            </a>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input user-select"
+                            type="checkbox"
+                            id="user2"
+                          />
+                          <label class="form-check-label" for="user2"></label>
+                        </div>
+                      </td>
+                      <td>UID10002</td>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <img
+                            src="https://randomuser.me/api/portraits/women/2.jpg"
+                            alt="用户头像"
+                            class="user-avatar-sm mr-2"
+                          />
+                          <div>
+                            <div class="font-weight-bold">李四</div>
+                            <div class="text-muted small">13900139000</div>
+                            <div class="text-muted small">lisi@qq.com</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <span class="badge badge-secondary">普通用户</span>
+                      </td>
+                      <td><span class="badge badge-danger">已禁用</span></td>
+                      <td>2024-02-22 14:15</td>
+                      <td>2024-05-10 09:20</td>
+                      <td>
+                        <div class="dropdown">
+                          <button
+                            class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                            type="button"
+                            data-toggle="dropdown"
+                          >
+                            操作
+                          </button>
+                          <div class="dropdown-menu">
+                            <a
+                              class="dropdown-item view-user"
+                              href="#"
+                              data-id="UID10002"
+                            >
+                              <i class="fas fa-eye mr-2"></i>查看详情
+                            </a>
+                            <a
+                              class="dropdown-item edit-user"
+                              href="#"
+                              data-id="UID10002"
+                            >
+                              <i class="fas fa-edit mr-2"></i>编辑
+                            </a>
+                            <a
+                              class="dropdown-item enable-user"
+                              href="#"
+                              data-id="UID10002"
+                            >
+                              <i class="fas fa-check mr-2"></i>启用
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a
+                              class="dropdown-item text-danger delete-user"
+                              href="#"
+                              data-id="UID10002"
+                            >
+                              <i class="fas fa-trash-alt mr-2"></i>删除
+                            </a>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input user-select"
+                            type="checkbox"
+                            id="user3"
+                          />
+                          <label class="form-check-label" for="user3"></label>
+                        </div>
+                      </td>
+                      <td>UID10003</td>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <img
+                            src="https://randomuser.me/api/portraits/men/3.jpg"
+                            alt="用户头像"
+                            class="user-avatar-sm mr-2"
+                          />
+                          <div>
+                            <div class="font-weight-bold">王五</div>
+                            <div class="text-muted small">13700137000</div>
+                            <div class="text-muted small">
+                              wangwu@qq.com
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="badge badge-primary">管理员</span></td>
+                      <td><span class="badge badge-success">正常</span></td>
+                      <td>2023-12-05 08:40</td>
+                      <td>2024-06-18 11:30</td>
+                      <td>
+                        <div class="dropdown">
+                          <button
+                            class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                            type="button"
+                            data-toggle="dropdown"
+                          >
+                            操作
+                          </button>
+                          <div class="dropdown-menu">
+                            <a
+                              class="dropdown-item view-user"
+                              href="#"
+                              data-id="UID10003"
+                            >
+                              <i class="fas fa-eye mr-2"></i>查看详情
+                            </a>
+                            <a
+                              class="dropdown-item edit-user"
+                              href="#"
+                              data-id="UID10003"
+                            >
+                              <i class="fas fa-edit mr-2"></i>编辑
+                            </a>
+                            <a
+                              class="dropdown-item disable-user"
+                              href="#"
+                              data-id="UID10003"
+                            >
+                              <i class="fas fa-ban mr-2"></i>禁用
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a
+                              class="dropdown-item text-danger delete-user"
+                              href="#"
+                              data-id="UID10003"
+                            >
+                              <i class="fas fa-trash-alt mr-2"></i>删除
+                            </a>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input user-select"
+                            type="checkbox"
+                            id="user4"
+                          />
+                          <label class="form-check-label" for="user4"></label>
+                        </div>
+                      </td>
+                      <td>UID10004</td>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <img
+                            src="https://randomuser.me/api/portraits/women/4.jpg"
+                            alt="用户头像"
+                            class="user-avatar-sm mr-2"
+                          />
+                          <div>
+                            <div class="font-weight-bold">赵六</div>
+                            <div class="text-muted small">13600136000</div>
+                            <div class="text-muted small">
+                              zhaoliu@qq.com
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <span class="badge badge-secondary">普通用户</span>
+                      </td>
+                      <td><span class="badge badge-warning">待审核</span></td>
+                      <td>2024-06-10 16:55</td>
+                      <td>2024-06-10 16:55</td>
+                      <td>
+                        <div class="dropdown">
+                          <button
+                            class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                            type="button"
+                            data-toggle="dropdown"
+                          >
+                            操作
+                          </button>
+                          <div class="dropdown-menu">
+                            <a
+                              class="dropdown-item view-user"
+                              href="#"
+                              data-id="UID10004"
+                            >
+                              <i class="fas fa-eye mr-2"></i>查看详情
+                            </a>
+                            <a
+                              class="dropdown-item edit-user"
+                              href="#"
+                              data-id="UID10004"
+                            >
+                              <i class="fas fa-edit mr-2"></i>编辑
+                            </a>
+                            <a
+                              class="dropdown-item approve-user"
+                              href="#"
+                              data-id="UID10004"
+                            >
+                              <i class="fas fa-check-circle mr-2"></i>审核通过
+                            </a>
+                            <a
+                              class="dropdown-item reject-user"
+                              href="#"
+                              data-id="UID10004"
+                            >
+                              <i class="fas fa-times-circle mr-2"></i>拒绝
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a
+                              class="dropdown-item text-danger delete-user"
+                              href="#"
+                              data-id="UID10004"
+                            >
+                              <i class="fas fa-trash-alt mr-2"></i>删除
+                            </a>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input user-select"
+                            type="checkbox"
+                            id="user5"
+                          />
+                          <label class="form-check-label" for="user5"></label>
+                        </div>
+                      </td>
+                      <td>UID10005</td>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <img
+                            src="https://randomuser.me/api/portraits/men/5.jpg"
+                            alt="用户头像"
+                            class="user-avatar-sm mr-2"
+                          />
+                          <div>
+                            <div class="font-weight-bold">钱七</div>
+                            <div class="text-muted small">13500135000</div>
+                            <div class="text-muted small">
+                              qianqi@qq.com
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="badge badge-info">VIP用户</span></td>
+                      <td><span class="badge badge-success">正常</span></td>
+                      <td>2024-03-18 09:20</td>
+                      <td>2024-06-15 14:30</td>
+                      <td>
+                        <div class="dropdown">
+                          <button
+                            class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                            type="button"
+                            data-toggle="dropdown"
+                          >
+                            操作
+                          </button>
+                          <div class="dropdown-menu">
+                            <a
+                              class="dropdown-item view-user"
+                              href="#"
+                              data-id="UID10005"
+                            >
+                              <i class="fas fa-eye mr-2"></i>查看详情
+                            </a>
+                            <a
+                              class="dropdown-item edit-user"
+                              href="#"
+                              data-id="UID10005"
+                            >
+                              <i class="fas fa-edit mr-2"></i>编辑
+                            </a>
+                            <a
+                              class="dropdown-item disable-user"
+                              href="#"
+                              data-id="UID10005"
+                            >
+                              <i class="fas fa-ban mr-2"></i>禁用
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a
+                              class="dropdown-item text-danger delete-user"
+                              href="#"
+                              data-id="UID10005"
+                            >
+                              <i class="fas fa-trash-alt mr-2"></i>删除
+                            </a>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- 分页 -->
+              <div
+                class="d-flex justify-content-between align-items-center mt-4"
+              >
+                <div class="text-muted">
+                  显示 <span class="font-weight-bold">1-5</span> 项，共
+                  <span class="font-weight-bold">25</span> 项
+                </div>
+                <div class="pagination">
+                  <button
+                    class="btn btn-outline-secondary btn-sm mr-1"
+                    disabled
+                  >
+                    <i class="fas fa-chevron-left"></i>
+                  </button>
+                  <button class="btn btn-primary btn-sm mr-1">1</button>
+                  <button class="btn btn-outline-secondary btn-sm mr-1">
+                    2
+                  </button>
+                  <button class="btn btn-outline-secondary btn-sm mr-1">
+                    3
+                  </button>
+                  <button class="btn btn-outline-secondary btn-sm mr-1">
+                    4
+                  </button>
+                  <button class="btn btn-outline-secondary btn-sm mr-1">
+                    5
+                  </button>
+                  <button class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- 用户详情模态框 -->
+    <div
+      class="modal fade"
+      id="userDetailModal"
+      tabindex="-1"
+      role="dialog"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">用户详情</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="user-detail-header d-flex align-items-center mb-4">
+              <img
+                src="https://randomuser.me/api/portraits/men/1.jpg"
+                alt="用户头像"
+                class="user-avatar-lg mr-3"
+              />
+              <div>
+                <h4 class="user-detail-name mb-1">张三</h4>
+                <p class="text-muted mb-1">UID10001</p>
+                <div class="user-detail-tags">
+                  <span class="badge badge-info mr-1">VIP用户</span>
+                  <span class="badge badge-success">正常</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <div class="card mb-4">
+                  <div class="card-header">
+                    <h6 class="mb-0">基本信息</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="info-item d-flex mb-2">
+                      <div class="info-label text-muted">用户名：</div>
+                      <div class="info-value">zhangsan</div>
+                    </div>
+                    <div class="info-item d-flex mb-2">
+                      <div class="info-label text-muted">真实姓名：</div>
+                      <div class="info-value">张三</div>
+                    </div>
+                    <div class="info-item d-flex mb-2">
+                      <div class="info-label text-muted">手机号码：</div>
+                      <div class="info-value">13800138000</div>
+                    </div>
+                    <div class="info-item d-flex mb-2">
+                      <div class="info-label text-muted">邮箱地址：</div>
+                      <div class="info-value">zhangsan@qq.com</div>
+                    </div>
+                    <div class="info-item d-flex mb-2">
+                      <div class="info-label text-muted">注册时间：</div>
+                      <div class="info-value">2024-01-15 10:30</div>
+                    </div>
+                    <div class="info-item d-flex">
+                      <div class="info-label text-muted">最近登录：</div>
+                      <div class="info-value">2024-06-20 15:45</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="card mb-4">
+                  <div class="card-header">
+                    <h6 class="mb-0">账户信息</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="info-item d-flex mb-2">
+                      <div class="info-label text-muted">用户类型：</div>
+                      <div class="info-value">VIP用户</div>
+                    </div>
+                    <div class="info-item d-flex mb-2">
+                      <div class="info-label text-muted">账户状态：</div>
+                      <div class="info-value">正常</div>
+                    </div>
+                    <div class="info-item d-flex mb-2">
+                      <div class="info-label text-muted">账号余额：</div>
+                      <div class="info-value">¥1,250.00</div>
+                    </div>
+                    <div class="info-item d-flex mb-2">
+                      <div class="info-label text-muted">积分：</div>
+                      <div class="info-value">3,500</div>
+                    </div>
+                    <div class="info-item d-flex mb-2">
+                      <div class="info-label text-muted">订单数量：</div>
+                      <div class="info-value">15</div>
+                    </div>
+                    <div class="info-item d-flex">
+                      <div class="info-label text-muted">预约次数：</div>
+                      <div class="info-value">23</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header d-flex justify-content-between">
+                <h6 class="mb-0">最近活动</h6>
+                <a href="#" class="text-primary small">查看全部</a>
+              </div>
+              <div class="card-body p-0">
+                <div class="activity-timeline">
+                  <div class="activity-item d-flex p-3 border-bottom">
+                    <div class="activity-icon mr-3">
+                      <i class="fas fa-sign-in-alt text-primary"></i>
+                    </div>
+                    <div class="activity-content">
+                      <div class="d-flex justify-content-between">
+                        <div class="activity-title">用户登录</div>
+                        <div class="activity-time text-muted small">
+                          2024-06-20 15:45
+                        </div>
+                      </div>
+                      <div class="activity-description small text-muted">
+                        用户通过iOS客户端成功登录系统
+                      </div>
+                    </div>
+                  </div>
+                  <div class="activity-item d-flex p-3 border-bottom">
+                    <div class="activity-icon mr-3">
+                      <i class="fas fa-credit-card text-success"></i>
+                    </div>
+                    <div class="activity-content">
+                      <div class="d-flex justify-content-between">
+                        <div class="activity-title">充值成功</div>
+                        <div class="activity-time text-muted small">
+                          2024-06-18 09:30
+                        </div>
+                      </div>
+                      <div class="activity-description small text-muted">
+                        用户成功充值 ¥500.00，交易单号：T20240618093012345
+                      </div>
+                    </div>
+                  </div>
+                  <div class="activity-item d-flex p-3">
+                    <div class="activity-icon mr-3">
+                      <i class="fas fa-calendar-check text-info"></i>
+                    </div>
+                    <div class="activity-content">
+                      <div class="d-flex justify-content-between">
+                        <div class="activity-title">场馆预约</div>
+                        <div class="activity-time text-muted small">
+                          2024-06-15 14:20
+                        </div>
+                      </div>
+                      <div class="activity-description small text-muted">
+                        用户预约了羽毛球馆，预约时间：2024-06-22 18:00-20:00
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-dismiss="modal"
+            >
+              关闭
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-dismiss="modal"
+              data-toggle="modal"
+              data-target="#editUserModal"
+            >
+              编辑用户
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 添加用户模态框 -->
+    <div
+      class="modal fade"
+      id="addUserModal"
+      tabindex="-1"
+      role="dialog"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">添加用户</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="addUserForm">
+              <div class="form-group">
+                <label for="newUsername"
+                  >用户名 <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="newUsername"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="newRealName">真实姓名</label>
+                <input type="text" class="form-control" id="newRealName" />
+              </div>
+              <div class="form-group">
+                <label for="newMobile"
+                  >手机号码 <span class="text-danger">*</span></label
+                >
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="newMobile"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="newEmail">邮箱地址</label>
+                <input type="email" class="form-control" id="newEmail" />
+              </div>
+              <div class="form-group">
+                <label for="newPassword"
+                  >密码 <span class="text-danger">*</span></label
+                >
+                <input
+                  type="password"
+                  class="form-control"
+                  id="newPassword"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="newConfirmPassword"
+                  >确认密码 <span class="text-danger">*</span></label
+                >
+                <input
+                  type="password"
+                  class="form-control"
+                  id="newConfirmPassword"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="newUserType">用户类型</label>
+                <select class="form-control" id="newUserType">
+                  <option value="regular">普通用户</option>
+                  <option value="vip">VIP用户</option>
+                  <option value="admin">管理员</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="newUserStatus">账户状态</label>
+                <select class="form-control" id="newUserStatus">
+                  <option value="active">正常</option>
+                  <option value="inactive">禁用</option>
+                  <option value="pending">待审核</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="newUserRemark">备注</label>
+                <textarea
+                  class="form-control"
+                  id="newUserRemark"
+                  rows="3"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-dismiss="modal"
+            >
+              取消
+            </button>
+            <button type="submit" form="addUserForm" class="btn btn-primary">
+              添加
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 编辑用户模态框 -->
+    <div
+      class="modal fade"
+      id="editUserModal"
+      tabindex="-1"
+      role="dialog"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">编辑用户</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="editUserForm">
+              <div class="form-group">
+                <label for="editUsername"
+                  >用户名 <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editUsername"
+                  value="zhangsan"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editRealName">真实姓名</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editRealName"
+                  value="张三"
+                />
+              </div>
+              <div class="form-group">
+                <label for="editMobile"
+                  >手机号码 <span class="text-danger">*</span></label
+                >
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="editMobile"
+                  value="13800138000"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editEmail">邮箱地址</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="editEmail"
+                  value="zhangsan@qq.com"
+                />
+              </div>
+              <div class="form-group">
+                <label for="editPassword"
+                  >密码
+                  <small class="text-muted">(留空表示不修改)</small></label
+                >
+                <input type="password" class="form-control" id="editPassword" />
+              </div>
+              <div class="form-group">
+                <label for="editConfirmPassword">确认密码</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="editConfirmPassword"
+                />
+              </div>
+              <div class="form-group">
+                <label for="editUserType">用户类型</label>
+                <select class="form-control" id="editUserType">
+                  <option value="regular">普通用户</option>
+                  <option value="vip" selected>VIP用户</option>
+                  <option value="admin">管理员</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="editUserStatus">账户状态</label>
+                <select class="form-control" id="editUserStatus">
+                  <option value="active" selected>正常</option>
+                  <option value="inactive">禁用</option>
+                  <option value="pending">待审核</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="editUserRemark">备注</label>
+                <textarea class="form-control" id="editUserRemark" rows="3">
+高级VIP会员，消费能力强。</textarea
+                >
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-dismiss="modal"
+            >
+              取消
+            </button>
+            <button type="submit" form="editUserForm" class="btn btn-primary">
+              保存
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="../js/main.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 用户数据（模拟）
+        const users = [
+          {
+            id: "UID10001",
+            name: "张三",
+            mobile: "13800138000",
+            email: "zhangsan@qq.com",
+            type: "VIP用户",
+            typeValue: "vip",
+            status: "正常",
+            statusValue: "active",
+            reg: "2024-01-15 10:30",
+            login: "2024-06-20 15:45",
+            avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+          },
+          {
+            id: "UID10002",
+            name: "李四",
+            mobile: "13900139000",
+            email: "lisi@qq.com",
+            type: "普通用户",
+            typeValue: "regular",
+            status: "已禁用",
+            statusValue: "inactive",
+            reg: "2024-02-22 14:15",
+            login: "2024-05-10 09:20",
+            avatar: "https://randomuser.me/api/portraits/women/2.jpg",
+          },
+          {
+            id: "UID10003",
+            name: "王五",
+            mobile: "13700137000",
+            email: "wangwu@qq.com",
+            type: "管理员",
+            typeValue: "admin",
+            status: "正常",
+            statusValue: "active",
+            reg: "2023-12-05 08:40",
+            login: "2024-06-18 11:30",
+            avatar: "https://randomuser.me/api/portraits/men/3.jpg",
+          },
+          {
+            id: "UID10004",
+            name: "赵六",
+            mobile: "13600136000",
+            email: "zhaoliu@qq.com",
+            type: "普通用户",
+            typeValue: "regular",
+            status: "待审核",
+            statusValue: "pending",
+            reg: "2024-06-10 16:55",
+            login: "2024-06-10 16:55",
+            avatar: "https://randomuser.me/api/portraits/women/4.jpg",
+          },
+          {
+            id: "UID10005",
+            name: "钱七",
+            mobile: "13500135000",
+            email: "qianqi@qq.com",
+            type: "VIP用户",
+            typeValue: "vip",
+            status: "正常",
+            statusValue: "active",
+            reg: "2024-03-18 09:20",
+            login: "2024-06-15 14:30",
+            avatar: "https://randomuser.me/api/portraits/men/5.jpg",
+          },
+        ];
+
+        // 渲染用户表格
+        function renderTable(data) {
+          const tbody = document.querySelector(".table tbody");
+          tbody.innerHTML = "";
+          if (data.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted">无符合条件的用户</td></tr>`;
+            return;
+          }
+          data.forEach((user, idx) => {
+            tbody.innerHTML += `
+              <tr>
+                <td><div class="form-check"><input class="form-check-input user-select" type="checkbox" id="user${idx+1}" /><label class="form-check-label" for="user${idx+1}"></label></div></td>
+                <td>${user.id}</td>
+                <td><div class="d-flex align-items-center"><img src="${user.avatar}" alt="用户头像" class="user-avatar-sm mr-2" /><div><div class="font-weight-bold">${user.name}</div><div class="text-muted small">${user.mobile}</div><div class="text-muted small">${user.email}</div></div></div></td>
+                <td><span class="badge badge-${user.typeValue === 'vip' ? 'info' : user.typeValue === 'admin' ? 'primary' : 'secondary'}">${user.type}</span></td>
+                <td><span class="badge badge-${user.statusValue === 'active' ? 'success' : user.statusValue === 'inactive' ? 'danger' : 'warning'}">${user.status}</span></td>
+                <td>${user.reg}</td>
+                <td>${user.login}</td>
+                <td><div class="dropdown"><button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown">操作</button><div class="dropdown-menu"><a class="dropdown-item view-user" href="#" data-id="${user.id}"><i class="fas fa-eye mr-2"></i>查看详情</a><a class="dropdown-item edit-user" href="#" data-id="${user.id}"><i class="fas fa-edit mr-2"></i>编辑</a>${user.statusValue === 'active' ? `<a class="dropdown-item disable-user" href="#" data-id="${user.id}"><i class="fas fa-ban mr-2"></i>禁用</a>` : user.statusValue === 'inactive' ? `<a class="dropdown-item enable-user" href="#" data-id="${user.id}"><i class="fas fa-check mr-2"></i>启用</a>` : ''}<div class="dropdown-divider"></div><a class="dropdown-item text-danger delete-user" href="#" data-id="${user.id}"><i class="fas fa-trash-alt mr-2"></i>删除</a></div></div></td>
+              </tr>
+            `;
+          });
+        }
+
+        // 初始渲染
+        renderTable(users);
+
+        // 筛选功能
+        function filterUsers() {
+          const status = document.getElementById("filterUserStatus").value;
+          const type = document.getElementById("filterUserType").value;
+          const keyword = document.getElementById("filterKeyword").value.trim();
+          let filtered = users.filter(u => {
+            let match = true;
+            if (status && u.statusValue !== status) match = false;
+            if (type && u.typeValue !== type) match = false;
+            if (keyword && !(u.name.includes(keyword) || u.mobile.includes(keyword) || u.email.includes(keyword))) match = false;
+            return match;
+          });
+          renderTable(filtered);
+        }
+
+        document.getElementById("applyFilterBtn").onclick = filterUsers;
+
+        // 重置功能
+        document.getElementById("resetFilterBtn").onclick = function() {
+          document.getElementById("filterUserStatus").value = "";
+          document.getElementById("filterUserType").value = "";
+          document.getElementById("filterRegistrationTime").value = "";
+          document.getElementById("filterKeyword").value = "";
+          renderTable(users);
+        };
+
+        // 退出登录处理
+        const logoutBtn = document.getElementById("logoutBtn");
+        if (logoutBtn) {
+          logoutBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            if (confirm("确定要退出系统吗？")) {
+              window.location.href = "login.html";
+            }
+          });
+        }
+
+        // 全选/取消全选用户
+        const selectAllUsers = document.getElementById("selectAllUsers");
+        const userCheckboxes = document.querySelectorAll(".user-select");
+
+        if (selectAllUsers) {
+          selectAllUsers.addEventListener("change", function () {
+            userCheckboxes.forEach((checkbox) => {
+              checkbox.checked = selectAllUsers.checked;
+            });
+          });
+        }
+
+        // 监听用户操作
+        document.querySelectorAll(".view-user").forEach((item) => {
+          item.addEventListener("click", function (e) {
+            e.preventDefault();
+            const userId = this.getAttribute("data-id");
+            // 这里应该请求用户详情数据，然后显示
+            console.log(`查看用户详情: ${userId}`);
+            $("#userDetailModal").modal("show");
+          });
+        });
+
+        document.querySelectorAll(".edit-user").forEach((item) => {
+          item.addEventListener("click", function (e) {
+            e.preventDefault();
+            const userId = this.getAttribute("data-id");
+            // 这里应该请求用户数据进行编辑
+            console.log(`编辑用户: ${userId}`);
+            $("#editUserModal").modal("show");
+          });
+        });
+
+        document.querySelectorAll(".disable-user").forEach((item) => {
+          item.addEventListener("click", function (e) {
+            e.preventDefault();
+            const userId = this.getAttribute("data-id");
+            if (confirm(`确定要禁用用户 ${userId} 吗？`)) {
+              // 这里应该发送禁用请求
+              console.log(`禁用用户: ${userId}`);
+              // 成功后刷新列表
+              alert("用户已禁用");
+            }
+          });
+        });
+
+        document.querySelectorAll(".enable-user").forEach((item) => {
+          item.addEventListener("click", function (e) {
+            e.preventDefault();
+            const userId = this.getAttribute("data-id");
+            if (confirm(`确定要启用用户 ${userId} 吗？`)) {
+              // 这里应该发送启用请求
+              console.log(`启用用户: ${userId}`);
+              // 成功后刷新列表
+              alert("用户已启用");
+            }
+          });
+        });
+
+        document.querySelectorAll(".delete-user").forEach((item) => {
+          item.addEventListener("click", function (e) {
+            e.preventDefault();
+            const userId = this.getAttribute("data-id");
+            if (confirm(`确定要删除用户 ${userId} 吗？此操作不可恢复！`)) {
+              // 这里应该发送删除请求
+              console.log(`删除用户: ${userId}`);
+              // 成功后刷新列表
+              alert("用户已删除");
+            }
+          });
+        });
+
+        // 表单提交处理
+        const addUserForm = document.getElementById("addUserForm");
+        if (addUserForm) {
+          addUserForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            // 这里应该发送添加用户请求
+            console.log("添加用户表单提交");
+            // 模拟添加成功
+            $("#addUserModal").modal("hide");
+            alert("用户添加成功");
+          });
+        }
+
+        const editUserForm = document.getElementById("editUserForm");
+        if (editUserForm) {
+          editUserForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            // 这里应该发送编辑用户请求
+            console.log("编辑用户表单提交");
+            // 模拟编辑成功
+            $("#editUserModal").modal("hide");
+            alert("用户信息已更新");
+          });
+        }
+
+        // 导出按钮
+        const exportUsersBtn = document.getElementById("exportUsersBtn");
+        if (exportUsersBtn) {
+          exportUsersBtn.addEventListener("click", function () {
+            // 导出用户数据
+            console.log("导出用户数据");
+            alert("用户数据导出功能将在实际环境中实现");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

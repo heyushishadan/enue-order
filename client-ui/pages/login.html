@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>登录 - 场馆预约系统</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      body {
+        background-color: #ffffff;
+      }
+      .login-container {
+        padding: 30px 20px;
+      }
+      .login-header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .login-title {
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .login-subtitle {
+        color: var(--gray-1);
+        font-size: 16px;
+      }
+      .login-form {
+        margin-bottom: 20px;
+      }
+      .form-footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+        font-size: 14px;
+      }
+      .form-footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+      .error-message {
+        color: var(--danger-color);
+        font-size: 14px;
+        margin-top: 5px;
+      }
+      /* 自定义提示框样式 */
+      .toast-container {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+      }
+      .toast {
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        text-align: center;
+        min-width: 200px;
+      }
+      .toast.show {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- iOS状态栏 -->
+    <div class="ios-status-bar">
+      <div class="time">9:41</div>
+      <div class="status-icons">
+        <i class="fas fa-signal"></i>
+        <i class="fas fa-wifi"></i>
+        <i class="fas fa-battery-full"></i>
+      </div>
+    </div>
+
+    <!-- iOS导航栏 -->
+    <div class="ios-nav-bar">
+      <div class="left-button" data-action="back" data-target="welcome.html">
+        <i class="fas fa-chevron-left"></i> 返回
+      </div>
+      <div class="title">登录</div>
+      <div class="right-button"></div>
+    </div>
+
+    <div class="login-container">
+      <div class="login-header">
+        <h1 class="login-title">欢迎回来</h1>
+        <p class="login-subtitle">请使用您的账号登录系统</p>
+      </div>
+
+      <form class="login-form" data-validate="true">
+        <div class="ios-form-group">
+          <label class="ios-label" for="username">用户名或邮箱</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="ios-input"
+            placeholder="请输入用户名或邮箱"
+            autocomplete="username"
+            required
+          />
+          <div id="username-error" class="error-message hidden">
+            请输入用户名或邮箱
+          </div>
+        </div>
+
+        <div class="ios-form-group">
+          <label class="ios-label" for="password">密码</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="ios-input"
+            placeholder="请输入密码"
+            autocomplete="current-password"
+            required
+          />
+          <div id="password-error" class="error-message hidden">请输入密码</div>
+        </div>
+
+        <div class="form-footer">
+          <label class="ios-flex items-center">
+            <input type="checkbox" name="remember" id="remember" checked />
+            <span class="ios-ml-2">记住我</span>
+          </label>
+          <a href="#">忘记密码？</a>
+        </div>
+
+        <div class="ios-mt-4">
+          <button type="submit" class="ios-button">登录</button>
+        </div>
+      </form>
+
+      <div class="ios-text-center ios-mt-4">
+        <p>
+          还没有账号？
+          <a href="register.html" class="ios-text-primary">立即注册</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- 自定义提示框 -->
+    <div class="toast-container">
+      <div class="toast" id="toast"></div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 显示提示框函数
+        function showToast(message) {
+          const toast = document.getElementById("toast");
+          toast.textContent = message;
+          toast.classList.add("show");
+          
+          // 3秒后自动隐藏
+          setTimeout(() => {
+            toast.classList.remove("show");
+          }, 3000);
+        }
+
+        // 设置表单提交事件
+        document
+          .querySelector(".login-form")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            // 获取用户名和密码
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // 验证用户名和密码
+            if (!username || !password) {
+              showToast("账号或者密码不能为空，请重新输入");
+              return;
+            }
+
+            if (username === "xuchangle") {
+              if (password === "123456789") {
+                showToast("账号或密码错误，请重新输入");
+              } else {
+                showToast("账号或密码错误，请重新输入");
+              }
+            } else {
+              showToast("账号或密码错误，请重新输入");
+            }
+          });
+      });
+    </script>
+  </body>
+</html>
